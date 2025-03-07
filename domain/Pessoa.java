@@ -1,16 +1,31 @@
 package domain;
 
-public class Pessoa {
+import java.util.Scanner;
+
+public class  Pessoa {
     private String nome;
     private String email;
     private Integer idade;
     private float altura;
+    Scanner entrada = new Scanner(System.in);
 
     public Pessoa(String nome, String email, Integer idade, float altura) {
         this.nome = nome;
         this.email = email;
         this.idade = idade;
         this.altura = altura;
+    }
+
+
+    public void  Cadastro (Scanner entrada) {
+        System.out.print("1. ");
+        String nomeCompleto = entrada.nextLine();
+        System.out.print("2. ");
+        String email = entrada.nextLine();
+        System.out.print("3. ");
+        Integer idade = entrada.nextInt();
+        System.out.print("4. ");
+        float altura = entrada.nextFloat();
     }
 
     public void imprime() {
@@ -52,5 +67,6 @@ public class Pessoa {
     public void setAltura(float altura) {
         this.altura = altura;
     }
+
 }
 

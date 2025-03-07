@@ -85,6 +85,7 @@ public class CadastroUsuario {
         }
         File arquivoRenomeado = new File(pasta, Objects.requireNonNull(pasta.listFiles()).length - 1 + "-" + pessoa.getNome().toUpperCase().replace(" ", "") + ".txt");
         boolean isRenomeado = arquivoPessoa.renameTo(arquivoRenomeado);
+
     }
     public static void Cadastrar (){
         CriarPasta();
@@ -101,7 +102,8 @@ public class CadastroUsuario {
         System.out.println("  2 - Listar todos usuários cadastrados       ");
         System.out.println("  3 - Cadastrar nova pergunta no formulário       ");
         System.out.println("  4 - Deletar pergunta do formulário       ");
-        System.out.println("  5 - Cadastrar o usuário       ");
+        System.out.println("  5 - Pesquisar usuário por nome ou idade ou email      ");
+        System.out.println("  6 - Sair     ");
         System.out.println();
         int escolha = entrada.nextInt();
 
@@ -110,13 +112,23 @@ public class CadastroUsuario {
                 Cadastrar();
                 break;
             case 2:
-                System.out.println("Saindo do programa");
+                ExibirDados();
                 break;
             default:
                 System.out.println("Informe um número entre 1 e 2");
                 break;
         }
     }
-//    public void ExibirDados() {
-//    }
+
+    public static void ExibirDados() {
+        try (FileReader frNome = new FileReader("C:\\Users\\Samsung\\Documents\\Estudos\\projeto-crud-txt-java\\arquivosTXT\\2-MARIAJOSÉ.txt");
+             BufferedReader brNome = new BufferedReader(frNome)) {
+            String linha;
+            linha = brNome.readLine();
+            System.out.println(linha);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

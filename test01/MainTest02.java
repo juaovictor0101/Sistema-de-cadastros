@@ -9,5 +9,6 @@ import java.util.Scanner;
 public class MainTest02 extends CadastroUsuario  {
     public static void main(String[] args) {
        Menu();
+
     }
 }

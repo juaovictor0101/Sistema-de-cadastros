@@ -3,6 +3,8 @@ package domain;
 import java.io.*;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CadastroUsuario {
 
@@ -19,7 +21,7 @@ public class CadastroUsuario {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(isFormularioFileCriado);
+
         try (FileWriter fwformularioBase = new FileWriter(formularioFile);
              BufferedWriter brFormularioBase = new BufferedWriter(fwformularioBase)) {
             brFormularioBase.write("1 - Qual seu nome completo?");
@@ -61,10 +63,10 @@ public class CadastroUsuario {
         Integer idade = entrada.nextInt();
         System.out.print("4. ");
         float altura = entrada.nextFloat();
-        return new Pessoa (nomeCompleto, email, idade, altura);
+        return new Pessoa(nomeCompleto, email, idade, altura);
     }
 
-    public static void SalvarDados (Pessoa pessoa) {
+    public static void SalvarDados(Pessoa pessoa) {
         File pasta = new File("arquivosTXT");
         File arquivoPessoa = new File(pasta, "pessoa.txt");
 
@@ -87,14 +89,37 @@ public class CadastroUsuario {
         boolean isRenomeado = arquivoPessoa.renameTo(arquivoRenomeado);
 
     }
-    public static void Cadastrar (){
+
+    public static void Cadastrar() {
         CriarPasta();
         LerFormulario();
         Pessoa pessoa = Cadastro();
         SalvarDados(pessoa);
     }
 
-    public static void Menu (){
+    public static void ExibirDados() {
+        File pasta = new File("arquivosTXT");
+        File[] nomeFormulario;
+
+        nomeFormulario = pasta.listFiles((dir, arquivo) -> arquivo.matches("^\\d+-[A-Za-zÀ-ÖØ-öø-ÿ0-9_ ]+\\.txt$"));
+        String [] nomesFormatado = new String[nomeFormulario.length];
+        for (int i = 0; i < Objects.requireNonNull(nomeFormulario).length; i++) {
+             nomesFormatado[i] = nomeFormulario[i].getName().replaceFirst("^[0-9]+-", "").replace(".txt", "");
+
+        }
+        for (int i = 0; i < nomesFormatado.length; i++) {
+            System.out.println(nomesFormatado[i]);
+        }
+
+//        for (String nome : nomesFormatado) {
+//            String nomeComEspacos = nome.replaceAll("([a-z])([A-Z])", "$1 $2");
+//            Pattern pattern = Pattern.compile("\\b([A-Za-z])([A-Za-z]*)\\b");
+//            Matcher matcher = pattern.matcher(nomeComEspacos);
+//        }
+
+    }
+
+    public static void Menu() {
         Scanner entrada = new Scanner(System.in);
         System.out.println("--------Menu principal--------");
         System.out.println();
@@ -116,19 +141,7 @@ public class CadastroUsuario {
                 break;
             default:
                 System.out.println("Informe um número entre 1 e 2");
-                break;
-        }
-    }
-
-    public static void ExibirDados() {
-        try (FileReader frNome = new FileReader("C:\\Users\\Samsung\\Documents\\Estudos\\projeto-crud-txt-java\\arquivosTXT\\2-MARIAJOSÉ.txt");
-             BufferedReader brNome = new BufferedReader(frNome)) {
-            String linha;
-            linha = brNome.readLine();
-            System.out.println(linha);
-
-        } catch (IOException e) {
-            e.printStackTrace();
+                Menu();
         }
     }
 }

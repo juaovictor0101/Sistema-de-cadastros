@@ -11,8 +11,11 @@ public class CadastroUsuario {
     //metodo para criar uma pasta e dentro da pasta um arquivo.txt com as perguntas do formulario
 
     public static void CriarPasta() {
+
         File pasta = new File("arquivosTXT");
         boolean isPastaCriada = pasta.mkdir();
+
+        File indiceFile = new File(pasta, "indice.txt");
 
         File formularioFile = new File(pasta, "formulario.txt");
         boolean isFormularioFileCriado = false;
@@ -21,7 +24,6 @@ public class CadastroUsuario {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         try (FileWriter fwformularioBase = new FileWriter(formularioFile);
              BufferedWriter brFormularioBase = new BufferedWriter(fwformularioBase)) {
             brFormularioBase.write("1 - Qual seu nome completo?");
@@ -69,6 +71,15 @@ public class CadastroUsuario {
     public static void SalvarDados(Pessoa pessoa) {
         File pasta = new File("arquivosTXT");
         File arquivoPessoa = new File(pasta, "pessoa.txt");
+        File arquivoNome = new File(pasta, "indice.txt");
+
+        try (FileWriter fwArquivoIndice = new FileWriter(arquivoNome, true);
+             BufferedWriter brIndice = new BufferedWriter(fwArquivoIndice)) {
+            brIndice.write(pessoa.getNome());
+            brIndice.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         try (FileWriter fwPessoa = new FileWriter(arquivoPessoa, true);
              BufferedWriter brPessoa = new BufferedWriter(fwPessoa)) {
@@ -85,38 +96,54 @@ public class CadastroUsuario {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        File arquivoRenomeado = new File(pasta, Objects.requireNonNull(pasta.listFiles()).length - 1 + "-" + pessoa.getNome().toUpperCase().replace(" ", "") + ".txt");
+        File arquivoRenomeado = new File(pasta, Objects.requireNonNull(pasta.listFiles()).length - 2 + "-" + pessoa.getNome().toUpperCase().replace(" ", "") + ".txt");
         boolean isRenomeado = arquivoPessoa.renameTo(arquivoRenomeado);
-
     }
+
+    public static String[] listarDados(Pessoa pessoa) {
+        String[] nomesCompletos = new String[]{pessoa.getNome()};
+        return nomesCompletos;
+    }
+
+
+        public static void ExibirDados() {
+            try (FileReader frIndice = new FileReader("C:\\Users\\Samsung\\Documents\\Estudos\\projeto-crud-txt-java\\arquivosTXT\\indice.txt");
+                BufferedReader brIndice = new BufferedReader(frIndice)){
+
+                String linha;
+                int contadorIndice = 1;
+
+                while ((linha = brIndice.readLine())!= null){
+                    String nomeFormatado = formatarTitleCase(linha);
+                    System.out.println(contadorIndice + "-"+nomeFormatado);
+                    contadorIndice++;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+         }
 
     public static void Cadastrar() {
         CriarPasta();
         LerFormulario();
         Pessoa pessoa = Cadastro();
         SalvarDados(pessoa);
+        System.out.println("Cadastro realizado com sucesso!");
     }
 
-    public static void ExibirDados() {
-        File pasta = new File("arquivosTXT");
-        File[] nomeFormulario;
 
-        nomeFormulario = pasta.listFiles((dir, arquivo) -> arquivo.matches("^\\d+-[A-Za-zÀ-ÖØ-öø-ÿ0-9_ ]+\\.txt$"));
-        String [] nomesFormatado = new String[nomeFormulario.length];
-        for (int i = 0; i < Objects.requireNonNull(nomeFormulario).length; i++) {
-             nomesFormatado[i] = nomeFormulario[i].getName().replaceFirst("^[0-9]+-", "").replace(".txt", "");
-
+    public static String formatarTitleCase(String str) {
+        String[] palavras = str.split(" ");
+        StringBuilder resultado = new StringBuilder();
+        for (String palavra : palavras) {
+            if (!palavra.isEmpty()) {
+                resultado.append(Character.toUpperCase(palavra.charAt(0)))
+                        .append(palavra.substring(1).toLowerCase())
+                        .append(" ");
+            }
         }
-        for (int i = 0; i < nomesFormatado.length; i++) {
-            System.out.println(nomesFormatado[i]);
-        }
-
-//        for (String nome : nomesFormatado) {
-//            String nomeComEspacos = nome.replaceAll("([a-z])([A-Z])", "$1 $2");
-//            Pattern pattern = Pattern.compile("\\b([A-Za-z])([A-Za-z]*)\\b");
-//            Matcher matcher = pattern.matcher(nomeComEspacos);
-//        }
-
+        return resultado.toString().trim();
     }
 
     public static void Menu() {
@@ -125,9 +152,9 @@ public class CadastroUsuario {
         System.out.println();
         System.out.println("  1 - Cadastrar o usuário       ");
         System.out.println("  2 - Listar todos usuários cadastrados       ");
-        System.out.println("  3 - Cadastrar nova pergunta no formulário       ");
-        System.out.println("  4 - Deletar pergunta do formulário       ");
-        System.out.println("  5 - Pesquisar usuário por nome ou idade ou email      ");
+//        System.out.println("  3 - Cadastrar nova pergunta no formulário       ");
+//        System.out.println("  4 - Deletar pergunta do formulário       ");
+//        System.out.println("  5 - Pesquisar usuário por nome ou idade ou email      ");
         System.out.println("  6 - Sair     ");
         System.out.println();
         int escolha = entrada.nextInt();
@@ -135,9 +162,13 @@ public class CadastroUsuario {
         switch (escolha) {
             case 1:
                 Cadastrar();
+                Menu();
                 break;
             case 2:
                 ExibirDados();
+                Menu();
+                break;
+            case 6:
                 break;
             default:
                 System.out.println("Informe um número entre 1 e 2");

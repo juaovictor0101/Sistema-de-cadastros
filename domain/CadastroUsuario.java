@@ -110,7 +110,7 @@ public class CadastroUsuario {
                 BufferedReader brIndice = new BufferedReader(frIndice)){
 
                 String linha;
-                int contadorIndice = 1;
+                int contadorIndice = 0;
 
                 while ((linha = brIndice.readLine())!= null){
                     String nomeFormatado = formatarTitleCase(linha);
@@ -127,14 +127,25 @@ public class CadastroUsuario {
         File pasta = new File("arquivosC:\\Users\\Samsung\\Documents\\Estudos\\projeto-crud-txt-java\\arquivosTXTTXT");
         File arquivoPessoa = new File("C:\\Users\\Samsung\\Documents\\Estudos\\projeto-crud-txt-java\\arquivosTXT\\formulario.txt");
         Scanner entrada = new Scanner(System.in);
-//        int contadorPergunta =
+        int contador = 1;
+
+        try (FileReader frContador = new FileReader(arquivoPessoa);
+             BufferedReader brContador = new BufferedReader(frContador)){
+            while (brContador.readLine() != null){
+                contador++;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
         try (FileWriter fwPergunta = new FileWriter(arquivoPessoa, true);
              BufferedWriter bwPergunta = new BufferedWriter(fwPergunta)){
             System.out.println("Informe a pergunta que deseja cadastrar no formulário: ");
-            bwPergunta.write(entrada.nextLine());
+            bwPergunta.write(contador + " - "+ entrada.nextLine());
             bwPergunta.newLine();
             bwPergunta.flush();
+            System.out.println("Pergunta adcionada com sucesso!");
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -143,7 +154,12 @@ public class CadastroUsuario {
 
 
     public static void Cadastrar() {
-        CriarPasta();
+        File pasta = new File("arquivosTXT");
+        File formularioFile = new File(pasta, "formulario.txt");
+
+        if (!pasta.exists()){
+            CriarPasta();
+        }
         LerFormulario();
         Pessoa pessoa = Cadastro();
         SalvarDados(pessoa);

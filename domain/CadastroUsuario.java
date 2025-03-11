@@ -90,7 +90,6 @@ public class CadastroUsuario {
             brPessoa.write("3- " + pessoa.getIdade());
             brPessoa.newLine();
             brPessoa.write("4- " + pessoa.getAltura());
-            brPessoa.newLine();
             brPessoa.flush();
 
         } catch (Exception e) {
@@ -124,6 +123,25 @@ public class CadastroUsuario {
 
          }
 
+    public static void novaPergunta(){
+        File pasta = new File("arquivosC:\\Users\\Samsung\\Documents\\Estudos\\projeto-crud-txt-java\\arquivosTXTTXT");
+        File arquivoPessoa = new File("C:\\Users\\Samsung\\Documents\\Estudos\\projeto-crud-txt-java\\arquivosTXT\\formulario.txt");
+        Scanner entrada = new Scanner(System.in);
+//        int contadorPergunta =
+
+        try (FileWriter fwPergunta = new FileWriter(arquivoPessoa, true);
+             BufferedWriter bwPergunta = new BufferedWriter(fwPergunta)){
+            System.out.println("Informe a pergunta que deseja cadastrar no formulário: ");
+            bwPergunta.write(entrada.nextLine());
+            bwPergunta.newLine();
+            bwPergunta.flush();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public static void Cadastrar() {
         CriarPasta();
         LerFormulario();
@@ -152,7 +170,7 @@ public class CadastroUsuario {
         System.out.println();
         System.out.println("  1 - Cadastrar o usuário       ");
         System.out.println("  2 - Listar todos usuários cadastrados       ");
-//        System.out.println("  3 - Cadastrar nova pergunta no formulário       ");
+        System.out.println("  3 - Cadastrar nova pergunta no formulário       ");
 //        System.out.println("  4 - Deletar pergunta do formulário       ");
 //        System.out.println("  5 - Pesquisar usuário por nome ou idade ou email      ");
         System.out.println("  6 - Sair     ");
@@ -166,6 +184,10 @@ public class CadastroUsuario {
                 break;
             case 2:
                 ExibirDados();
+                Menu();
+                break;
+            case 3:
+                novaPergunta();
                 Menu();
                 break;
             case 6:

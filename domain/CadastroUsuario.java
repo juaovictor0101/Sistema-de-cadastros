@@ -105,33 +105,33 @@ public class CadastroUsuario {
     }
 
 
-        public static void ExibirDados() {
-            try (FileReader frIndice = new FileReader("C:\\Users\\Samsung\\Documents\\Estudos\\projeto-crud-txt-java\\arquivosTXT\\indice.txt");
-                BufferedReader brIndice = new BufferedReader(frIndice)){
+    public static void ExibirDados() {
+        try (FileReader frIndice = new FileReader("C:\\Users\\Samsung\\Documents\\Estudos\\projeto-crud-txt-java\\arquivosTXT\\indice.txt");
+             BufferedReader brIndice = new BufferedReader(frIndice)) {
 
-                String linha;
-                int contadorIndice = 0;
+            String linha;
+            int contadorIndice = 0;
 
-                while ((linha = brIndice.readLine())!= null){
-                    String nomeFormatado = formatarTitleCase(linha);
-                    System.out.println(contadorIndice + "-"+nomeFormatado);
-                    contadorIndice++;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            while ((linha = brIndice.readLine()) != null) {
+                String nomeFormatado = formatarTitleCase(linha);
+                System.out.println(contadorIndice + "-" + nomeFormatado);
+                contadorIndice++;
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-         }
+    }
 
-    public static void novaPergunta(){
+    public static void novaPergunta() {
         File pasta = new File("arquivosC:\\Users\\Samsung\\Documents\\Estudos\\projeto-crud-txt-java\\arquivosTXTTXT");
         File arquivoPessoa = new File("C:\\Users\\Samsung\\Documents\\Estudos\\projeto-crud-txt-java\\arquivosTXT\\formulario.txt");
         Scanner entrada = new Scanner(System.in);
         int contador = 1;
 
         try (FileReader frContador = new FileReader(arquivoPessoa);
-             BufferedReader brContador = new BufferedReader(frContador)){
-            while (brContador.readLine() != null){
+             BufferedReader brContador = new BufferedReader(frContador)) {
+            while (brContador.readLine() != null) {
                 contador++;
             }
         } catch (Exception ex) {
@@ -139,9 +139,9 @@ public class CadastroUsuario {
         }
 
         try (FileWriter fwPergunta = new FileWriter(arquivoPessoa, true);
-             BufferedWriter bwPergunta = new BufferedWriter(fwPergunta)){
+             BufferedWriter bwPergunta = new BufferedWriter(fwPergunta)) {
             System.out.println("Informe a pergunta que deseja cadastrar no formulário: ");
-            bwPergunta.write(contador + " - "+ entrada.nextLine());
+            bwPergunta.write(contador + " - " + entrada.nextLine());
             bwPergunta.newLine();
             bwPergunta.flush();
             System.out.println("Pergunta adcionada com sucesso!");
@@ -152,12 +152,67 @@ public class CadastroUsuario {
         }
     }
 
+    public static void apagarPergunta() {
+        File arquivoOriginal = new File("C:\\Users\\Samsung\\Documents\\Estudos\\projeto-crud-txt-java\\arquivosTXT\\formulario.txt");
+        File arquivoTemporario = new File("C:\\Users\\Samsung\\Documents\\Estudos\\projeto-crud-txt-java\\arquivosTXT\\temp.txt");
+        Scanner entrada = new Scanner(System.in);
+
+        try (BufferedReader br = new BufferedReader(new FileReader(arquivoOriginal))) {
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                System.out.println(linha);
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo: " + e.getMessage());
+            return;
+        }
+        System.out.print("Informe o número da pergunta que deseja apagar: ");
+        int numeroPergunta;
+        try {
+            numeroPergunta = Integer.parseInt(entrada.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Número inválido.");
+            return;
+        }
+
+        if (numeroPergunta <= 5) {
+            System.out.println("Erro: Apenas perguntas a partir da 5ª podem ser apagadas.");
+            return;
+        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(arquivoOriginal));
+             BufferedWriter bw = new BufferedWriter(new FileWriter(arquivoTemporario))) {
+
+            String linha;
+            int linhaAtual = 1;
+            while ((linha = br.readLine()) != null) {
+                if (linhaAtual != numeroPergunta) { // Copia todas as linhas, exceto a escolhida
+                    bw.write(linha);
+                    bw.newLine();
+                }
+                linhaAtual++;
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao processar o arquivo: " + e.getMessage());
+            return;
+        }
+        if (arquivoOriginal.delete()) {
+            if (!arquivoTemporario.renameTo(arquivoOriginal)) {
+                System.out.println("Erro ao renomear o arquivo temporário.");
+            } else {
+                System.out.println("Pergunta removida com sucesso!");
+            }
+        } else {
+            System.out.println("Erro ao excluir o arquivo original.");
+        }
+    }
+
 
     public static void Cadastrar() {
         File pasta = new File("arquivosTXT");
         File formularioFile = new File(pasta, "formulario.txt");
 
-        if (!pasta.exists()){
+        if (!pasta.exists()) {
             CriarPasta();
         }
         LerFormulario();
@@ -187,7 +242,7 @@ public class CadastroUsuario {
         System.out.println("  1 - Cadastrar o usuário       ");
         System.out.println("  2 - Listar todos usuários cadastrados       ");
         System.out.println("  3 - Cadastrar nova pergunta no formulário       ");
-//        System.out.println("  4 - Deletar pergunta do formulário       ");
+        System.out.println("  4 - Deletar pergunta do formulário       ");
 //        System.out.println("  5 - Pesquisar usuário por nome ou idade ou email      ");
         System.out.println("  6 - Sair     ");
         System.out.println();
@@ -204,6 +259,10 @@ public class CadastroUsuario {
                 break;
             case 3:
                 novaPergunta();
+                Menu();
+                break;
+            case 4:
+                apagarPergunta();
                 Menu();
                 break;
             case 6:

@@ -77,6 +77,7 @@ public class CadastroUsuario {
              BufferedWriter brIndice = new BufferedWriter(fwArquivoIndice)) {
             brIndice.write(pessoa.getNome());
             brIndice.newLine();
+            brIndice.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -127,14 +128,15 @@ public class CadastroUsuario {
         File pasta = new File("arquivosC:\\Users\\Samsung\\Documents\\Estudos\\projeto-crud-txt-java\\arquivosTXTTXT");
         File arquivoPessoa = new File("C:\\Users\\Samsung\\Documents\\Estudos\\projeto-crud-txt-java\\arquivosTXT\\formulario.txt");
         Scanner entrada = new Scanner(System.in);
-        int contador = 1;
 
+        int contador = 1;
         try (FileReader frContador = new FileReader(arquivoPessoa);
              BufferedReader brContador = new BufferedReader(frContador)) {
             while (brContador.readLine() != null) {
                 contador++;
             }
         } catch (Exception ex) {
+            System.out.println("Erro índice nova pergunta.");
             ex.printStackTrace();
         }
 
@@ -144,10 +146,11 @@ public class CadastroUsuario {
             bwPergunta.write(contador + " - " + entrada.nextLine());
             bwPergunta.newLine();
             bwPergunta.flush();
-            System.out.println("Pergunta adcionada com sucesso!");
+            System.out.println("Pergunta adicionada com sucesso!");
 
 
         } catch (Exception e) {
+            System.out.println("Erro ao adicionar uma nova pergunta.");
             e.printStackTrace();
         }
     }
@@ -164,6 +167,7 @@ public class CadastroUsuario {
             }
         } catch (IOException e) {
             System.out.println("Erro ao ler o arquivo: " + e.getMessage());
+            e.printStackTrace();
             return;
         }
         System.out.print("Informe o número da pergunta que deseja apagar: ");
@@ -172,25 +176,34 @@ public class CadastroUsuario {
             numeroPergunta = Integer.parseInt(entrada.nextLine());
         } catch (NumberFormatException e) {
             System.out.println("Número inválido.");
+            e.printStackTrace();
             return;
         }
 
-        if (numeroPergunta <= 5) {
+        if (numeroPergunta <= 4) {
             System.out.println("Erro: Apenas perguntas a partir da 5ª podem ser apagadas.");
             return;
         }
 
         try (BufferedReader br = new BufferedReader(new FileReader(arquivoOriginal));
              BufferedWriter bw = new BufferedWriter(new FileWriter(arquivoTemporario))) {
-
             String linha;
             int linhaAtual = 1;
+            int contadorIndice = 1;
+
             while ((linha = br.readLine()) != null) {
-                if (linhaAtual != numeroPergunta) { // Copia todas as linhas, exceto a escolhida
-                    bw.write(linha);
+                if (linhaAtual != numeroPergunta) {
+                    String[] partes = linha.split(" - ", 2);
+                    if (partes.length == 2) {
+                        bw.write(contadorIndice + " - " + partes[1]);
+                    } else {
+                        bw.write(contadorIndice + " - " + linha);
+                    }
                     bw.newLine();
+                    contadorIndice++;
                 }
                 linhaAtual++;
+                bw.flush();
             }
         } catch (IOException e) {
             System.out.println("Erro ao processar o arquivo: " + e.getMessage());

@@ -106,7 +106,7 @@ public class CadastroUsuario {
     }
 
 
-    public static void ExibirDados() {
+    public static void exibirDados() {
         try (FileReader frIndice = new FileReader("C:\\Users\\Samsung\\Documents\\Estudos\\projeto-crud-txt-java\\arquivosTXT\\indice.txt");
              BufferedReader brIndice = new BufferedReader(frIndice)) {
 
@@ -220,8 +220,47 @@ public class CadastroUsuario {
         }
     }
 
+    public static void buscarUsuario() {
+        File pasta = new File("arquivosTXT");
+        File[] nomes = pasta.listFiles((dir, nome) -> nome.matches("^\\d+-\\w+\\.txt$"));
+        Scanner entrada = new Scanner(System.in);
+        System.out.println("Informe o nome que busca: ");
+        String nomeBuscado = entrada.nextLine();
 
-    public static void Cadastrar() {
+        if (nomes == null) {
+            System.out.println("A pasta está vazia ou não existe.");
+            return;
+        }
+        System.out.println("Buscando por '" + nomeBuscado + "' em " + nomes.length + " arquivos...");
+
+        for (File nome : nomes) {
+            try (BufferedReader brNomes = new BufferedReader(new FileReader(nome))) {
+                String linha;
+                StringBuilder dadosUsuario = new StringBuilder();
+
+                while ((linha = brNomes.readLine()) != null) {
+                    if (dadosUsuario.length() == 0) {
+                        if (!linha.toLowerCase().contains(nomeBuscado.toLowerCase())) {
+                            dadosUsuario.setLength(0);
+                            continue;
+                        }
+                    }
+                    dadosUsuario.append(linha).append("\n");
+                }
+                if (dadosUsuario.length() > 0) {
+                    System.out.println(dadosUsuario);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+        }
+
+    }
+
+
+    public static void cadastrar() {
         File pasta = new File("arquivosTXT");
         File formularioFile = new File(pasta, "formulario.txt");
 
@@ -256,18 +295,18 @@ public class CadastroUsuario {
         System.out.println("  2 - Listar todos usuários cadastrados       ");
         System.out.println("  3 - Cadastrar nova pergunta no formulário       ");
         System.out.println("  4 - Deletar pergunta do formulário       ");
-//        System.out.println("  5 - Pesquisar usuário por nome ou idade ou email      ");
+        System.out.println("  5 - Pesquisar usuário por nome     ");
         System.out.println("  6 - Sair     ");
         System.out.println();
         int escolha = entrada.nextInt();
 
         switch (escolha) {
             case 1:
-                Cadastrar();
+                cadastrar();
                 Menu();
                 break;
             case 2:
-                ExibirDados();
+                exibirDados();
                 Menu();
                 break;
             case 3:
@@ -276,6 +315,10 @@ public class CadastroUsuario {
                 break;
             case 4:
                 apagarPergunta();
+                Menu();
+                break;
+            case 5:
+                buscarUsuario();
                 Menu();
                 break;
             case 6:

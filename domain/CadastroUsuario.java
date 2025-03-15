@@ -55,16 +55,49 @@ public class CadastroUsuario {
 
     }
 
-    public static Pessoa Cadastro() {
+    public static Pessoa Cadastro()  {
         Scanner entrada = new Scanner(System.in);
         System.out.print("1. ");
         String nomeCompleto = entrada.nextLine();
+        if(nomeCompleto.length()<10){
+            try {
+                throw new NomeInvalidoExeception();
+            } catch (NomeInvalidoExeception e) {
+                String message = e.getMessage();
+                System.out.println(message);
+                throw new RuntimeException(e);
+            }
+        }
         System.out.print("2. ");
         String email = entrada.nextLine();
+        if(!email.contains("@")){
+            try {
+                throw new EmailExeception();
+            } catch (EmailExeception e) {
+                String message = e.getMessage();
+                System.out.println(message);
+                throw new RuntimeException(e);
+            }
+        }
         System.out.print("3. ");
         Integer idade = entrada.nextInt();
+        if (idade <=18){
+            try {
+                throw new MenorIdadeExeception();
+            } catch (MenorIdadeExeception e) {
+                throw new RuntimeException(e);
+            }
+        }
         System.out.print("4. ");
-        float altura = entrada.nextFloat();
+        String alturaStr = entrada.nextLine();
+        if(!alturaStr.contains(",")){
+            try {
+                throw new AlturaException();
+            } catch (AlturaException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        float altura = Float.parseFloat(alturaStr);
         return new Pessoa(nomeCompleto, email, idade, altura);
     }
 
@@ -260,7 +293,7 @@ public class CadastroUsuario {
     }
 
 
-    public static void cadastrar() {
+    public static void cadastrar() throws NomeInvalidoExeception {
         File pasta = new File("arquivosTXT");
         File formularioFile = new File(pasta, "formulario.txt");
 
@@ -302,7 +335,12 @@ public class CadastroUsuario {
 
         switch (escolha) {
             case 1:
-                cadastrar();
+                try {
+                    cadastrar();
+                } catch (NomeInvalidoExeception e) {
+                    e.getMessage();
+                    throw new RuntimeException(e);
+                }
                 Menu();
                 break;
             case 2:

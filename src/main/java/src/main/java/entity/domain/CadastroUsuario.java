@@ -1,4 +1,4 @@
-package domain;
+package src.main.java.entity.domain;
 
 import java.io.*;
 import java.util.Objects;

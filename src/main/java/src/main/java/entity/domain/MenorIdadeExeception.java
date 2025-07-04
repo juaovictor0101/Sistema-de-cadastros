@@ -1,4 +1,4 @@
-package domain;
+package src.main.java.entity.domain;
 
 public class MenorIdadeExeception extends Exception{
     public MenorIdadeExeception() {

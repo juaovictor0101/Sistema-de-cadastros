@@ -1,4 +1,0 @@
-1- maria teste
-2- maria@teste.com
-3- 20
-4- 1.55

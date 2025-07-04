@@ -1,4 +1,4 @@
-package domain;
+package src.main.java.entity.domain;
 
 public class NomeInvalidoExeception extends Exception {
     public NomeInvalidoExeception() {

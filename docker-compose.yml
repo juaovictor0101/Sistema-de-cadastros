@@ -1,0 +1,15 @@
+version: '3.1'
+services:
+  db:
+    image: postgres
+    container_name: db_pets_postgres
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: pets_db
+    ports:
+      - "5433:5432"
+    volumes:
+       - pet_data:/var/lib/postgresql/data
+volumes:
+  pet_data:

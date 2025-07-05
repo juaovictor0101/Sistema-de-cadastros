@@ -1,4 +1,4 @@
-package src.main.java.requests;
+package br.com.registrationsystem.requests;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.GeneratedValue;
@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 import lombok.Data;
-import src.main.java.entity.Address;
+import br.com.registrationsystem.entity.Address;
 
 @Data
 @Builder

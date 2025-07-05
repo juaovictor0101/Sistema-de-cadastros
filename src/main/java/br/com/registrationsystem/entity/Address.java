@@ -1,4 +1,4 @@
-package src.main.java.entity;
+package br.com.registrationsystem.entity;
 
 import jakarta.persistence.Embeddable;
 import lombok.Getter;

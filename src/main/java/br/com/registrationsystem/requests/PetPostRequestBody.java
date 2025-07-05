@@ -1,4 +1,4 @@
-package src.main.java.requests;
+package br.com.registrationsystem.requests;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Embedded;
@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import src.main.java.entity.Address;
+import br.com.registrationsystem.entity.Address;
 
 @Data
 @Builder

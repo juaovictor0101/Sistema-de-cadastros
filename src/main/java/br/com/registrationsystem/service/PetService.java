@@ -1,14 +1,14 @@
-package src.main.java.service;
+package br.com.registrationsystem.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
-import src.main.java.entity.Pet;
-import src.main.java.mapper.PetMapper;
-import src.main.java.repository.PetRepository;
-import src.main.java.requests.PetPostRequestBody;
-import src.main.java.requests.PetPutRequestBody;
+import br.com.registrationsystem.entity.Pet;
+import br.com.registrationsystem.mapper.PetMapper;
+import br.com.registrationsystem.repository.PetRepository;
+import br.com.registrationsystem.requests.PetPostRequestBody;
+import br.com.registrationsystem.requests.PetPutRequestBody;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class PetService {
         return petRepository.save(pet);
     }
 
-    public Pet findPetById(Long id) {
+    public Pet findPetById(Long id) throws BadRequestException {
         return petRepository.findById(id).orElseThrow( ()-> new BadRequestException("Pet not found based on ID"));
     }
 
@@ -31,14 +31,14 @@ public class PetService {
         return petRepository.findPetByName(name);
     }
 
-    public void replacePet(PetPutRequestBody petPutRequestBody) {
+    public void replacePet(PetPutRequestBody petPutRequestBody) throws BadRequestException {
         Pet petSaved = findPetById(petPutRequestBody.getId());
         Pet pet = PetMapper.INSTANCE.toPet(petPutRequestBody);
         pet.setId(petSaved.getId());
         petRepository.save(pet);
     }
 
-    public void deletePetById(Long id) {
+    public void deletePetById(Long id) throws BadRequestException {
         petRepository.delete(findPetById(id));
     }
 

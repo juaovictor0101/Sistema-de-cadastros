@@ -1,10 +1,10 @@
-package src.main.java.mapper;
+package br.com.registrationsystem.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-import src.main.java.entity.Pet;
-import src.main.java.requests.PetPostRequestBody;
-import src.main.java.requests.PetPutRequestBody;
+import br.com.registrationsystem.entity.Pet;
+import br.com.registrationsystem.requests.PetPostRequestBody;
+import br.com.registrationsystem.requests.PetPutRequestBody;
 
 @Mapper(componentModel = "spring")
 public abstract class PetMapper {

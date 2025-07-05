@@ -1,7 +1,7 @@
-package src.main.java.repository;
+package br.com.registrationsystem.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import src.main.java.entity.Pet;
+import br.com.registrationsystem.entity.Pet;
 
 import java.util.List;
 

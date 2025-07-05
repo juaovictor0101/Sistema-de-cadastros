@@ -1,4 +1,4 @@
-package src.main.java.entity;
+package br.com.registrationsystem.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -23,13 +23,12 @@ public class Pet {
 
     @Embedded
     private Address address;
-
     private double age;
     private double weight;
     private String breed;
     private String type;
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 }

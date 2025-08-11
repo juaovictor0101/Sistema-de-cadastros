@@ -1,7 +1,7 @@
 package br.com.registrationsystem.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,17 +16,23 @@ import lombok.NoArgsConstructor;
 public class Pet {
 
 
-    @NotEmpty(message = "Pet first name cannot bem empty")
+    @NotEmpty(message = "Pet first name cannot be empty")
     private String name;
+    @NotEmpty(message = "Pet lastname cannot be empty")
     private String lasName;
-    private String sex;
+    private SexPet sex;
+    private TypePet type;
 
     @Embedded
     private Address address;
+    @Max(value = 20L, message = "Pet's age cannot be bigger than 20 years")
     private double age;
-    private double weight;
+
+    @DecimalMin(value="0.5", message = "Pet's weight cannot be less than 0,5 Kg")
+    @DecimalMax(value = "60.0", message = "Pet's weight cannot be bigger than 60 Kg")
+    private Double weight;
+
     private String breed;
-    private String type;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

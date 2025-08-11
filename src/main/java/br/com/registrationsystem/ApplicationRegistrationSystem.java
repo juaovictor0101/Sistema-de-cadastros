@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ApplicationRegistrationSystem {
 
-    // Este é o novo ponto de entrada da sua aplicação.
+
     public static void main(String[] args) {
         SpringApplication.run(ApplicationRegistrationSystem.class, args);
     }

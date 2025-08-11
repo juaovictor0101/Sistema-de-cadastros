@@ -12,7 +12,7 @@ import br.com.registrationsystem.entity.Address;
 @Data
 @Builder
 public class PetPutRequestBody {
-    @NotEmpty(message = "Pet first name cannot bem empty")
+    @NotEmpty(message = "Pet.java first name cannot bem empty")
     private String name;
     private String lasName;
     private String sex;

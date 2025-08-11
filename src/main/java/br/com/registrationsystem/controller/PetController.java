@@ -1,0 +1,59 @@
+package br.com.registrationsystem.controller;
+
+import br.com.registrationsystem.entity.Pet;
+import br.com.registrationsystem.requests.PetPostRequestBody;
+import br.com.registrationsystem.requests.PetPutRequestBody;
+import br.com.registrationsystem.service.PetService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor
+@Log4j2
+@RequestMapping("pets")
+public class PetController {
+    private final PetService petService;
+
+    @GetMapping (path = "/all")
+    public ResponseEntity<List<Pet>> listAll() {
+        return new ResponseEntity<List<Pet>>(petService.listAllPets(), HttpStatus.OK);
+    }
+
+    //to do: tratar execção do service quanto a busca por ID
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<Pet> findById (@PathVariable long id) {
+        return new ResponseEntity<>(petService.findPetById(id), HttpStatus.OK);
+    }
+
+    @GetMapping (path = "/findByName")
+    public ResponseEntity<List<Pet>> findByName (@RequestParam String name) {
+        return new ResponseEntity<>(petService.findPetByName(name), HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<Pet> save(@RequestBody @Valid PetPostRequestBody petPostRequestBody) {
+        return new ResponseEntity<>(petService.savePet(petPostRequestBody), HttpStatus.CREATED);
+    }
+
+
+    //to do: Tratar execeção do service quanto ao deleteByID
+    @DeleteMapping
+    public ResponseEntity<Pet> delete (@PathVariable long id) {
+        petService.deletePetById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    //to do: Tratar execeção do service quanto ao update
+    @PutMapping
+    public ResponseEntity<Pet> update (@RequestBody @Valid PetPutRequestBody petPutRequestBody) {
+        petService.replacePet(petPutRequestBody);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+}

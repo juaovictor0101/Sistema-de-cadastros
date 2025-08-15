@@ -32,6 +32,11 @@ public class PetService {
         return petRepository.findPetByName(name);
     }
 
+    public List<Pet> findAPetsByNameOrLastName(String name , String lastName) {
+        return petRepository.findByNameOrLastName(name, lastName);
+    }
+
+
     public void replacePet(PetPutRequestBody petPutRequestBody) throws BadRequestException {
         Pet petSaved = findPetById(petPutRequestBody.getId());
         Pet pet = petMapper.toPet(petPutRequestBody);

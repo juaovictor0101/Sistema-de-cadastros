@@ -36,9 +36,15 @@ public class PetController {
         }
     }
 
-    @GetMapping (path = "/{firstName}")
-    public ResponseEntity<List<Pet>> findByName (@RequestParam String name) {
+    @GetMapping (path = "/findByName")
+    public ResponseEntity<List<Pet>> findByFirstName (@RequestParam String name) {
         return new ResponseEntity<>(petService.findPetByName(name), HttpStatus.OK);
+    }
+    @GetMapping("/search")
+    public ResponseEntity<List<Pet>> searchByNameOrLastName(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String lastName) {
+        return new ResponseEntity<>(petService.findAPetsByNameOrLastName(name, lastName), HttpStatus.OK);
     }
 
     @PostMapping

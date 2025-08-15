@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -18,21 +20,29 @@ public class Pet {
 
     @NotEmpty(message = "Pet first name cannot be empty")
     private String name;
+
     @NotEmpty(message = "Pet lastname cannot be empty")
-    private String lasName;
+    private String lastName;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 10)
     private SexPet sex;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 10)
     private TypePet type;
 
     @Embedded
     private Address address;
     @Max(value = 20L, message = "Pet's age cannot be bigger than 20 years")
-    private double age;
+    private BigDecimal age;
 
     @DecimalMin(value="0.5", message = "Pet's weight cannot be less than 0,5 Kg")
     @DecimalMax(value = "60.0", message = "Pet's weight cannot be bigger than 60 Kg")
-    private Double weight;
+    private BigDecimal weight;
 
     private String breed;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

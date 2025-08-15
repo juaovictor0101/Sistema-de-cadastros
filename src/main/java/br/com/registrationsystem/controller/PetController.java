@@ -7,6 +7,7 @@ import br.com.registrationsystem.service.PetService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,10 +29,14 @@ public class PetController {
     //to do: tratar execção do service quanto a busca por ID
     @GetMapping(path = "/{id}")
     public ResponseEntity<Pet> findById (@PathVariable long id) {
-        return new ResponseEntity<>(petService.findPetById(id), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(petService.findPetById(id), HttpStatus.OK);
+        } catch (BadRequestException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    @GetMapping (path = "/findByName")
+    @GetMapping (path = "/{firstName}")
     public ResponseEntity<List<Pet>> findByName (@RequestParam String name) {
         return new ResponseEntity<>(petService.findPetByName(name), HttpStatus.OK);
     }
@@ -43,16 +48,24 @@ public class PetController {
 
 
     //to do: Tratar execeção do service quanto ao deleteByID
-    @DeleteMapping
+    @DeleteMapping (path = "{id}")
     public ResponseEntity<Pet> delete (@PathVariable long id) {
-        petService.deletePetById(id);
+        try {
+            petService.deletePetById(id);
+        } catch (BadRequestException e) {
+            throw new RuntimeException(e);
+        }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     //to do: Tratar execeção do service quanto ao update
     @PutMapping
     public ResponseEntity<Pet> update (@RequestBody @Valid PetPutRequestBody petPutRequestBody) {
-        petService.replacePet(petPutRequestBody);
+        try {
+            petService.replacePet(petPutRequestBody);
+        } catch (BadRequestException e) {
+            throw new RuntimeException(e);
+        }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

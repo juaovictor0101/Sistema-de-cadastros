@@ -22,6 +22,7 @@ public class Pet {
     private String name;
 
     @NotEmpty(message = "Pet lastname cannot be empty")
+    @Column(name = "last_name")
     private String lastName;
 
     @Enumerated(EnumType.STRING)

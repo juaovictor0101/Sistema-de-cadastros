@@ -1,6 +1,7 @@
 package br.com.registrationsystem.controller;
 
 import br.com.registrationsystem.entity.Pet;
+import br.com.registrationsystem.entity.SexPet;
 import br.com.registrationsystem.requests.PetPostRequestBody;
 import br.com.registrationsystem.requests.PetPutRequestBody;
 import br.com.registrationsystem.service.PetService;
@@ -25,7 +26,6 @@ public class PetController {
         return new ResponseEntity<>(petService.listAllPets(), HttpStatus.OK);
     }
 
-    //to do: tratar execção do service quanto a busca por ID
     @GetMapping(path = "/{id}")
     public ResponseEntity<Pet> findById (@PathVariable Long id) {
         return new ResponseEntity<>(petService.findPetById(id), HttpStatus.OK);
@@ -35,11 +35,16 @@ public class PetController {
     public ResponseEntity<List<Pet>> findByFirstName (@RequestParam String name) {
         return new ResponseEntity<>(petService.findPetByName(name), HttpStatus.OK);
     }
-    @GetMapping("/search")
-    public ResponseEntity<List<Pet>> searchByNameOrLastName(
+    @GetMapping(path="/findByNameORLastName")
+    public ResponseEntity<List<Pet>> findByNameOrLastName(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String lastName) {
         return new ResponseEntity<>(petService.findAPetsByNameOrLastName(name, lastName), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/findBySex/{sex}")
+    public ResponseEntity <List <Pet>> findPetBySex(@PathVariable ("sex") SexPet sexPet){
+        return new ResponseEntity<>(petService.findPetBySex(sexPet), HttpStatus.OK);
     }
 
     @PostMapping
@@ -48,14 +53,12 @@ public class PetController {
     }
 
 
-    //to do: Tratar execeção do service quanto ao deleteByID
     @DeleteMapping (path = "{id}")
     public ResponseEntity<Pet> delete (@PathVariable Long id) {
         petService.deletePetById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    //to do: Tratar execeção do service quanto ao update
     @PutMapping
     public ResponseEntity<Pet> update (@RequestBody @Valid PetPutRequestBody petPutRequestBody) {
         petService.replacePet(petPutRequestBody);

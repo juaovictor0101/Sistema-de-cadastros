@@ -35,7 +35,7 @@ public class PetPostRequestBody {
     private String sex;
 
     @Valid
-    private AddressDto address;
+    private AddressRequestBody address;
 
     @NotNull @DecimalMax("20.0")
     private BigDecimal age;

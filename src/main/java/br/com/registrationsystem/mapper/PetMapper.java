@@ -4,7 +4,7 @@ import br.com.registrationsystem.entity.Address;
 import br.com.registrationsystem.entity.Pet;
 import br.com.registrationsystem.entity.SexPet;
 import br.com.registrationsystem.entity.TypePet;
-import br.com.registrationsystem.requests.AddressDto;
+import br.com.registrationsystem.requests.AddressRequestBody;
 import br.com.registrationsystem.requests.PetPostRequestBody;
 import br.com.registrationsystem.requests.PetPutRequestBody;
 import org.mapstruct.Mapper;
@@ -20,7 +20,7 @@ public interface PetMapper {
 
     Pet toPet(PetPutRequestBody petPutRequestBody);
 
-    public abstract Address toAddress(AddressDto addressDto);
+    public abstract Address toAddress(AddressRequestBody adressRequestBody);
 
     default SexPet toSexPet(String sex) {
         if (sex == null || sex.trim().isEmpty()) {

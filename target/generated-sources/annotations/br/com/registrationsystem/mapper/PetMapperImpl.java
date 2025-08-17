@@ -2,7 +2,7 @@ package br.com.registrationsystem.mapper;
 
 import br.com.registrationsystem.entity.Address;
 import br.com.registrationsystem.entity.Pet;
-import br.com.registrationsystem.requests.AddressDto;
+import br.com.registrationsystem.requests.AddressRequestBody;
 import br.com.registrationsystem.requests.PetPostRequestBody;
 import br.com.registrationsystem.requests.PetPutRequestBody;
 import javax.annotation.processing.Generated;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-08-15T13:23:28-0300",
+    date = "2025-08-17T17:29:58-0300",
     comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.7 (Microsoft)"
 )
 @Component
@@ -58,16 +58,16 @@ public class PetMapperImpl implements PetMapper {
     }
 
     @Override
-    public Address toAddress(AddressDto addressDto) {
-        if ( addressDto == null ) {
+    public Address toAddress(AddressRequestBody adressRequestBody) {
+        if ( adressRequestBody == null ) {
             return null;
         }
 
         Address address = new Address();
 
-        address.setNumber( addressDto.getNumber() );
-        address.setStreet( addressDto.getStreet() );
-        address.setCity( addressDto.getCity() );
+        address.setNumber( adressRequestBody.getNumber() );
+        address.setStreet( adressRequestBody.getStreet() );
+        address.setCity( adressRequestBody.getCity() );
 
         return address;
     }

@@ -1,9 +1,9 @@
 package br.com.registrationsystem.service;
 
+import br.com.registrationsystem.exception.BadRequestException;
 import br.com.registrationsystem.mapper.PetMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 import br.com.registrationsystem.entity.Pet;
 import br.com.registrationsystem.repository.PetRepository;
@@ -24,8 +24,9 @@ public class PetService {
         return petRepository.save(pet);
     }
 
-    public Pet findPetById(Long id) throws BadRequestException {
-        return petRepository.findById(id).orElseThrow( ()-> new BadRequestException("Pet not found based on ID"));
+    public Pet findPetById(Long id) {
+        return petRepository.findById(id)
+                .orElseThrow(()->new BadRequestException("Pet not found based on ID"));
     }
 
     public List<Pet> findPetByName (String name) {
@@ -37,14 +38,14 @@ public class PetService {
     }
 
 
-    public void replacePet(PetPutRequestBody petPutRequestBody) throws BadRequestException {
+    public void replacePet(PetPutRequestBody petPutRequestBody) {
         Pet petSaved = findPetById(petPutRequestBody.getId());
         Pet pet = petMapper.toPet(petPutRequestBody);
         pet.setId(petSaved.getId());
         petRepository.save(pet);
     }
 
-    public void deletePetById(Long id) throws BadRequestException {
+    public void deletePetById(Long id) {
         petRepository.delete(findPetById(id));
     }
 

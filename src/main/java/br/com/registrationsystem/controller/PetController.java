@@ -7,7 +7,6 @@ import br.com.registrationsystem.service.PetService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,17 +22,13 @@ public class PetController {
 
     @GetMapping (path = "/all")
     public ResponseEntity<List<Pet>> listAll() {
-        return new ResponseEntity<List<Pet>>(petService.listAllPets(), HttpStatus.OK);
+        return new ResponseEntity<>(petService.listAllPets(), HttpStatus.OK);
     }
 
     //to do: tratar execção do service quanto a busca por ID
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Pet> findById (@PathVariable long id) {
-        try {
-            return new ResponseEntity<>(petService.findPetById(id), HttpStatus.OK);
-        } catch (BadRequestException e) {
-            throw new RuntimeException(e);
-        }
+    public ResponseEntity<Pet> findById (@PathVariable Long id) {
+        return new ResponseEntity<>(petService.findPetById(id), HttpStatus.OK);
     }
 
     @GetMapping (path = "/findByName")
@@ -55,23 +50,15 @@ public class PetController {
 
     //to do: Tratar execeção do service quanto ao deleteByID
     @DeleteMapping (path = "{id}")
-    public ResponseEntity<Pet> delete (@PathVariable long id) {
-        try {
-            petService.deletePetById(id);
-        } catch (BadRequestException e) {
-            throw new RuntimeException(e);
-        }
+    public ResponseEntity<Pet> delete (@PathVariable Long id) {
+        petService.deletePetById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     //to do: Tratar execeção do service quanto ao update
     @PutMapping
     public ResponseEntity<Pet> update (@RequestBody @Valid PetPutRequestBody petPutRequestBody) {
-        try {
-            petService.replacePet(petPutRequestBody);
-        } catch (BadRequestException e) {
-            throw new RuntimeException(e);
-        }
+        petService.replacePet(petPutRequestBody);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

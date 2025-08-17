@@ -11,6 +11,7 @@ import br.com.registrationsystem.repository.PetRepository;
 import br.com.registrationsystem.requests.PetPostRequestBody;
 import br.com.registrationsystem.requests.PetPutRequestBody;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -42,6 +43,9 @@ public class PetService {
         return petRepository.findPetBySex(sexPet);
     }
 
+    public List<Pet> findPetByAge(BigDecimal age) {
+        return petRepository.findPetByAge(age);
+    }
 
     public void replacePet(PetPutRequestBody petPutRequestBody) {
         Pet petSaved = findPetById(petPutRequestBody.getId());

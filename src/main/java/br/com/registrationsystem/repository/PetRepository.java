@@ -6,6 +6,7 @@ import br.com.registrationsystem.entity.Pet;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface PetRepository extends JpaRepository<Pet, Long> {
@@ -15,4 +16,5 @@ public interface PetRepository extends JpaRepository<Pet, Long> {
     List<Pet> findByNameOrLastName(@Param("name") String name, @Param("lastName") String lastName);
 
     List<Pet> findPetBySex(SexPet sex);
+    List<Pet> findPetByAge(BigDecimal age);
 }

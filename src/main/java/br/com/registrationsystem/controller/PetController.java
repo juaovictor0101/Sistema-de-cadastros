@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -45,6 +46,11 @@ public class PetController {
     @GetMapping(path = "/findBySex/{sex}")
     public ResponseEntity <List <Pet>> findPetBySex(@PathVariable ("sex") SexPet sexPet){
         return new ResponseEntity<>(petService.findPetBySex(sexPet), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/findByAge/{age}")
+    public ResponseEntity<List<Pet>> findPetByAge(@PathVariable ("age") BigDecimal age){
+        return new ResponseEntity<>(petService.findPetByAge(age),HttpStatus.OK);
     }
 
     @PostMapping

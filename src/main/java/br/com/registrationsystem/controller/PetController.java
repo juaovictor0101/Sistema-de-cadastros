@@ -1,5 +1,6 @@
 package br.com.registrationsystem.controller;
 
+import br.com.registrationsystem.entity.Address;
 import br.com.registrationsystem.entity.Pet;
 import br.com.registrationsystem.entity.SexPet;
 import br.com.registrationsystem.requests.PetPostRequestBody;
@@ -53,13 +54,30 @@ public class PetController {
         return new ResponseEntity<>(petService.findPetByAge(age),HttpStatus.OK);
     }
 
+    @GetMapping(path = "/findByWeight/{weight}")
+    public ResponseEntity <List <Pet>> findPetByWeight(@PathVariable ("weight") BigDecimal weight){
+        return new ResponseEntity<>(petService.findPetByWeight(weight),HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/findByBreed/{breed}")
+    public ResponseEntity<List<Pet>> findPetByBreed(@PathVariable ("breed") String breed){
+        return new ResponseEntity <>(petService.findPetByBreed(breed),HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/findByAddress")
+    public ResponseEntity<List<Pet>> findPetByAddress(
+            @RequestParam(required = false) String street,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) String number) {
+        return new ResponseEntity<>(petService.findPetByAddress(street, city, number), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Pet> save(@RequestBody @Valid PetPostRequestBody petPostRequestBody) {
         return new ResponseEntity<>(petService.savePet(petPostRequestBody), HttpStatus.CREATED);
     }
 
-
-    @DeleteMapping (path = "{id}")
+    @DeleteMapping (path = "/delete/{id}")
     public ResponseEntity<Pet> delete (@PathVariable Long id) {
         petService.deletePetById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

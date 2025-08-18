@@ -1,5 +1,6 @@
 package br.com.registrationsystem.repository;
 
+import br.com.registrationsystem.entity.Address;
 import br.com.registrationsystem.entity.SexPet;
 import org.springframework.data.jpa.repository.JpaRepository;
 import br.com.registrationsystem.entity.Pet;
@@ -17,4 +18,14 @@ public interface PetRepository extends JpaRepository<Pet, Long> {
 
     List<Pet> findPetBySex(SexPet sex);
     List<Pet> findPetByAge(BigDecimal age);
+    List<Pet> findPetByWeight(BigDecimal weight);
+    List<Pet> findPetByBreed(String breed);
+
+    @Query("SELECT p FROM Pet p WHERE " +
+            "(:street IS NULL OR :street = '' OR LOWER(p.address.street) LIKE LOWER(CONCAT('%', :street, '%'))) AND " +
+            "(:city IS NULL OR :city = '' OR LOWER(p.address.city) LIKE LOWER(CONCAT('%', :city, '%'))) AND " +
+            "(:number IS NULL OR :number = '' OR p.address.number LIKE %:number%)")
+    List<Pet> findPetByAddressFields(@Param("street") String street,
+                                     @Param("city") String city,
+                                     @Param("number") String number);
 }

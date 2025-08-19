@@ -2,6 +2,7 @@ package br.com.registrationsystem.service;
 
 import br.com.registrationsystem.entity.Address;
 import br.com.registrationsystem.entity.SexPet;
+import br.com.registrationsystem.entity.TypePet;
 import br.com.registrationsystem.exception.BadRequestException;
 import br.com.registrationsystem.mapper.PetMapper;
 import jakarta.transaction.Transactional;
@@ -58,6 +59,11 @@ public class PetService {
 
     public List<Pet> findPetByAddress(String street, String city, String number) {
         return petRepository.findPetByAddressFields(street, city, number);
+    }
+
+    public List<Pet> findPetByNameOrLastNameOrAgeOrSexOrTypeOrAddressOrAgeOrBreed
+            (String name, String lastName, SexPet sex, TypePet type, Address address, BigDecimal age, String breed, BigDecimal weight) {
+        return petRepository.findPetByNameOrLastNameOrSexOrTypeOrAddressOrAgeOrBreedOrWeight(name, lastName, sex, type, address, age, breed, weight);
     }
 
 

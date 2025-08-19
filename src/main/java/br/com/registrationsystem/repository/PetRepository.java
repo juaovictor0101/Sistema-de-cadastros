@@ -1,9 +1,10 @@
 package br.com.registrationsystem.repository;
 
 import br.com.registrationsystem.entity.Address;
-import br.com.registrationsystem.entity.SexPet;
-import org.springframework.data.jpa.repository.JpaRepository;
 import br.com.registrationsystem.entity.Pet;
+import br.com.registrationsystem.entity.SexPet;
+import br.com.registrationsystem.entity.TypePet;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -17,9 +18,15 @@ public interface PetRepository extends JpaRepository<Pet, Long> {
     List<Pet> findByNameOrLastName(@Param("name") String name, @Param("lastName") String lastName);
 
     List<Pet> findPetBySex(SexPet sex);
+
     List<Pet> findPetByAge(BigDecimal age);
+
     List<Pet> findPetByWeight(BigDecimal weight);
+
     List<Pet> findPetByBreed(String breed);
+
+    List<Pet> findPetByNameOrLastNameOrSexOrTypeOrAddressOrAgeOrBreedOrWeight
+            (String name, String lastName, SexPet sex, TypePet type, Address address, BigDecimal age, String breed, BigDecimal weight);
 
     @Query("SELECT p FROM Pet p WHERE " +
             "(:street IS NULL OR :street = '' OR LOWER(p.address.street) LIKE LOWER(CONCAT('%', :street, '%'))) AND " +

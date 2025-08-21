@@ -1,6 +1,5 @@
 package br.com.registrationsystem.repository;
 
-import br.com.registrationsystem.entity.Address;
 import br.com.registrationsystem.entity.Pet;
 import br.com.registrationsystem.entity.SexPet;
 import br.com.registrationsystem.entity.TypePet;
@@ -25,8 +24,34 @@ public interface PetRepository extends JpaRepository<Pet, Long> {
 
     List<Pet> findPetByBreed(String breed);
 
-    List<Pet> findPetByNameOrLastNameOrSexOrTypeOrAddressOrAgeOrBreedOrWeight
-            (String name, String lastName, SexPet sex, TypePet type, Address address, BigDecimal age, String breed, BigDecimal weight);
+    @Query("SELECT p FROM Pet p WHERE " +
+            "(:name IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', CAST(:name AS string), '%'))) AND " +
+            "(:lastName IS NULL OR LOWER(p.lastName) LIKE LOWER(CONCAT('%', CAST(:lastName AS string), '%'))) AND " +
+            "(:sex IS NULL OR p.sex = :sex) AND " +
+            "(:type IS NULL OR p.type = :type) AND " +
+
+            // ======================= VERSÃO FINAL E CORRIGIDA =======================
+            "(:street IS NULL OR LOWER(p.address.street) = LOWER(CAST(:street AS string))) AND " +
+            "(:city IS NULL OR LOWER(p.address.city) = LOWER(CAST(:city AS string))) AND " +
+            // Mantemos a igualdade simples para o número, pois não usa LOWER()
+            "(:number IS NULL OR p.address.number = :number) AND " +
+            // ======================= FIM DA CORREÇÃO =======================
+
+            "(:age IS NULL OR p.age = :age) AND " +
+            "(:breed IS NULL OR LOWER(p.breed) LIKE LOWER(CONCAT('%', CAST(:breed AS string), '%'))) AND " +
+            "(:weight IS NULL OR p.weight = :weight)")
+    List<Pet> findByAnyAttribute(@Param("name") String name,
+                                 @Param("lastName") String lastName,
+                                 @Param("sex") SexPet sex,
+                                 @Param("type") TypePet type,
+                                 @Param("street") String street,
+                                 @Param("city") String city,
+                                 @Param("number") String number,
+                                 @Param("age") BigDecimal age,
+                                 @Param("breed") String breed,
+                                 @Param("weight") BigDecimal weight);
+    //name, lastName, sex, type, street, city, number, age, breed, weight
+
 
     @Query("SELECT p FROM Pet p WHERE " +
             "(:street IS NULL OR :street = '' OR LOWER(p.address.street) LIKE LOWER(CONCAT('%', :street, '%'))) AND " +

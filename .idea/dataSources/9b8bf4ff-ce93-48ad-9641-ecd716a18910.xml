@@ -11,9 +11,9 @@
 4||10|c|G
 4||10|C|G
 4||10|T|G</Grants>
-      <IntrospectionStateNumber>743</IntrospectionStateNumber>
+      <IntrospectionStateNumber>758</IntrospectionStateNumber>
       <ServerVersion>17.5</ServerVersion>
-      <StartupTime>1755301022</StartupTime>
+      <StartupTime>1755719797</StartupTime>
       <TimeZones>true ACDT
 true ACSST
 false ACST
@@ -1408,7 +1408,7 @@ true posixrules
 13219||10|C|G
 13219||-9223372036854775808|U|G
 13219||10|U|G</Grants>
-      <IntrospectionStateNumber>743</IntrospectionStateNumber>
+      <IntrospectionStateNumber>758</IntrospectionStateNumber>
       <ObjectId>16384</ObjectId>
       <OwnerName>root</OwnerName>
     </database>
@@ -4845,8 +4845,8 @@ true posixrules
     <schema id="265" parent="2" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>743</IntrospectionStateNumber>
-      <LastIntrospectionLocalTimestamp>2025-08-15.23:38:46</LastIntrospectionLocalTimestamp>
+      <IntrospectionStateNumber>758</IntrospectionStateNumber>
+      <LastIntrospectionLocalTimestamp>2025-08-21.14:58:38</LastIntrospectionLocalTimestamp>
       <ObjectId>2200</ObjectId>
       <StateNumber>532</StateNumber>
       <OwnerName>pg_database_owner</OwnerName>
@@ -8217,7 +8217,7 @@ true posixrules
     </sequence>
     <table id="511" parent="265" name="pets">
       <ObjectId>16386</ObjectId>
-      <StateNumber>741</StateNumber>
+      <StateNumber>757</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>root</OwnerName>
     </table>
@@ -8229,9 +8229,9 @@ true posixrules
     </check>
     <check id="513" parent="511" name="pets_type_check">
       <ColNames>type</ColNames>
-      <ObjectId>16391</ObjectId>
-      <Predicate>(type)::text = ANY ((ARRAY[&apos;DOG&apos;::character varying, &apos;CAT&apos;::character varying])::text[])</Predicate>
-      <StateNumber>741</StateNumber>
+      <ObjectId>16400</ObjectId>
+      <Predicate>(type)::text = ANY (ARRAY[(&apos;DOG&apos;::character varying)::text, (&apos;CAT&apos;::character varying)::text])</Predicate>
+      <StateNumber>757</StateNumber>
     </check>
     <check id="514" parent="511" name="pets_age_check">
       <ColNames>age</ColNames>
@@ -8300,7 +8300,7 @@ true posixrules
     </column>
     <column id="524" parent="511" name="type">
       <Position>10</Position>
-      <StateNumber>741</StateNumber>
+      <StateNumber>757</StateNumber>
       <StoredType>varchar(10)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>

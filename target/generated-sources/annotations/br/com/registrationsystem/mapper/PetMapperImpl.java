@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-08-17T17:29:58-0300",
-    comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.7 (Microsoft)"
+    date = "2025-08-21T12:58:45-0300",
+    comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.7 (Oracle Corporation)"
 )
 @Component
 public class PetMapperImpl implements PetMapper {

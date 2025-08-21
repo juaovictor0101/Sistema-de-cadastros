@@ -29,15 +29,14 @@ public class PetService {
     }
 
     public Pet findPetById(Long id) {
-        return petRepository.findById(id)
-                .orElseThrow(()->new BadRequestException("Pet not found based on ID"));
+        return petRepository.findById(id).orElseThrow(() -> new BadRequestException("Pet not found based on ID"));
     }
 
-    public List<Pet> findPetByName (String name) {
+    public List<Pet> findPetByName(String name) {
         return petRepository.findPetByName(name);
     }
 
-    public List<Pet> findAPetsByNameOrLastName(String name , String lastName) {
+    public List<Pet> findAPetsByNameOrLastName(String name, String lastName) {
         return petRepository.findByNameOrLastName(name, lastName);
     }
 
@@ -53,7 +52,7 @@ public class PetService {
         return petRepository.findPetByWeight(weight);
     }
 
-    public List<Pet> findPetByBreed (String breed) {
+    public List<Pet> findPetByBreed(String breed) {
         return petRepository.findPetByBreed(breed);
     }
 
@@ -61,9 +60,26 @@ public class PetService {
         return petRepository.findPetByAddressFields(street, city, number);
     }
 
-    public List<Pet> findPetByNameOrLastNameOrAgeOrSexOrTypeOrAddressOrAgeOrBreed
-            (String name, String lastName, SexPet sex, TypePet type, Address address, BigDecimal age, String breed, BigDecimal weight) {
-        return petRepository.findPetByNameOrLastNameOrSexOrTypeOrAddressOrAgeOrBreedOrWeight(name, lastName, sex, type, address, age, breed, weight);
+    public List<Pet> findByAnyAttribute
+            (String name, String lastName, String sexStr, String typeStr, String street, String city, String number,
+             BigDecimal age, String breed, BigDecimal weight) {
+
+        SexPet sex = null;
+        if (sexStr != null && !sexStr.isBlank()) {
+            try {
+                sex = SexPet.valueOf(sexStr.toUpperCase());
+            } catch (IllegalArgumentException e) {
+            }
+        }
+        TypePet type = null;
+        if (typeStr != null && !typeStr.isBlank()) {
+            try {
+                type = TypePet.valueOf(typeStr.toUpperCase());
+            } catch (IllegalArgumentException e) {
+            }
+        }
+
+        return petRepository.findByAnyAttribute(name, lastName, sex, type, street, city, number, age, breed, weight);
     }
 
 
@@ -78,7 +94,7 @@ public class PetService {
         petRepository.delete(findPetById(id));
     }
 
-    public List<Pet> listAllPets(){
+    public List<Pet> listAllPets() {
         return petRepository.findAll();
     }
 }

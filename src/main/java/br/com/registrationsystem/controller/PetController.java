@@ -1,9 +1,7 @@
 package br.com.registrationsystem.controller;
 
-import br.com.registrationsystem.entity.Address;
 import br.com.registrationsystem.entity.Pet;
 import br.com.registrationsystem.entity.SexPet;
-import br.com.registrationsystem.entity.TypePet;
 import br.com.registrationsystem.requests.PetPostRequestBody;
 import br.com.registrationsystem.requests.PetPutRequestBody;
 import br.com.registrationsystem.service.PetService;
@@ -29,7 +27,7 @@ public class PetController {
         return new ResponseEntity<>(petService.listAllPets(), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/users/{id}")
+    @GetMapping(path = "/findUsersByID/{id}")
     public ResponseEntity<Pet> findById (@PathVariable Long id) {
         return new ResponseEntity<>(petService.findPetById(id), HttpStatus.OK);
     }
@@ -45,27 +43,27 @@ public class PetController {
         return new ResponseEntity<>(petService.findAPetsByNameOrLastName(name, lastName), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/users/{sex}")
+    @GetMapping(path = "/findUsersBySex/{sex}")
     public ResponseEntity <List <Pet>> findPetBySex(@PathVariable ("sex") SexPet sexPet){
         return new ResponseEntity<>(petService.findPetBySex(sexPet), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/users/{age}")
+    @GetMapping(path = "/findUsersByAge/{age}")
     public ResponseEntity<List<Pet>> findPetByAge(@PathVariable ("age") BigDecimal age){
         return new ResponseEntity<>(petService.findPetByAge(age),HttpStatus.OK);
     }
 
-    @GetMapping(path = "/users/{weight}")
+    @GetMapping(path = "/findUsersByWeight/{weight}")
     public ResponseEntity <List <Pet>> findPetByWeight(@PathVariable ("weight") BigDecimal weight){
         return new ResponseEntity<>(petService.findPetByWeight(weight),HttpStatus.OK);
     }
 
-    @GetMapping(path = "/users/{breed}")
+    @GetMapping(path = "/findUsersByBreed/{breed}")
     public ResponseEntity<List<Pet>> findPetByBreed(@PathVariable ("breed") String breed){
         return new ResponseEntity <>(petService.findPetByBreed(breed),HttpStatus.OK);
     }
 
-    @GetMapping(path = "/usersAddress/")
+    @GetMapping(path = "/findUsersByAddress/")
     public ResponseEntity<List<Pet>> findPetByAddress(
             @RequestParam(required = false) String street,
             @RequestParam(required = false) String city,
@@ -73,28 +71,23 @@ public class PetController {
         return new ResponseEntity<>(petService.findPetByAddress(street, city, number), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/usersAll/")
+
+    //to do, verificar erros em pesquisar com um só parametro
+    @GetMapping(path = "/findUsersByAnyAttributes/")
     public ResponseEntity<List<Pet>> searchPets(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String lastName,
-            @RequestParam(required = false) SexPet sex,
-            @RequestParam(required = false) TypePet type,
-            @RequestParam(required = false) Address address,
+            @RequestParam(required = false) String sex,
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String street,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) String number,
             @RequestParam(required = false) BigDecimal age,
             @RequestParam(required = false) String breed,
             @RequestParam(required = false) BigDecimal weight) {
+        //name, lastName, sex, type, street, city, number, age, breed, weight
 
-        System.out.println("Parâmetros recebidos:");
-        System.out.println("name: " + name);
-        System.out.println("lastName: " + lastName);
-        System.out.println("sex: " + sex);
-        System.out.println("age: " + age);
-        System.out.println("weight: " + weight);
-        System.out.println("type: " + type);
-        System.out.println("breed: " + breed);
-        System.out.println("address: " + address);
-
-        List<Pet> pets = petService.findPetByNameOrLastNameOrAgeOrSexOrTypeOrAddressOrAgeOrBreed(name, lastName, sex, type, address, age, breed, weight);
+        List<Pet> pets = petService.findByAnyAttribute(name, lastName, sex, type, street, city, number, age, breed, weight);
         return ResponseEntity.ok(pets);
 }
     @PostMapping (path= "/users/")

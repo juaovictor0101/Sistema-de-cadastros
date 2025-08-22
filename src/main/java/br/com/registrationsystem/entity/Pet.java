@@ -26,15 +26,16 @@ public class Pet {
     private String lastName;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 10)
+    @Column(name = "sex")
     private SexPet sex;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 10)
+    @Column(name = "type")
     private TypePet type;
 
     @Embedded
     private Address address;
+
     @Max(value = 20L, message = "Pet's age cannot be bigger than 20 years")
     private BigDecimal age;
 

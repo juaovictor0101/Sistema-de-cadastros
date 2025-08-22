@@ -1,19 +1,18 @@
 package br.com.registrationsystem.service;
 
-import br.com.registrationsystem.entity.Address;
+import br.com.registrationsystem.entity.Pet;
 import br.com.registrationsystem.entity.SexPet;
-import br.com.registrationsystem.entity.TypePet;
 import br.com.registrationsystem.exception.BadRequestException;
 import br.com.registrationsystem.mapper.PetMapper;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import br.com.registrationsystem.entity.Pet;
 import br.com.registrationsystem.repository.PetRepository;
 import br.com.registrationsystem.requests.PetPostRequestBody;
 import br.com.registrationsystem.requests.PetPutRequestBody;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -61,23 +60,9 @@ public class PetService {
     }
 
     public List<Pet> findByAnyAttribute
-            (String name, String lastName, String sexStr, String typeStr, String street, String city, String number,
+            (String name, String lastName, String sex, String type, String street, String city, String number,
              BigDecimal age, String breed, BigDecimal weight) {
 
-        SexPet sex = null;
-        if (sexStr != null && !sexStr.isBlank()) {
-            try {
-                sex = SexPet.valueOf(sexStr.toUpperCase());
-            } catch (IllegalArgumentException e) {
-            }
-        }
-        TypePet type = null;
-        if (typeStr != null && !typeStr.isBlank()) {
-            try {
-                type = TypePet.valueOf(typeStr.toUpperCase());
-            } catch (IllegalArgumentException e) {
-            }
-        }
 
         return petRepository.findByAnyAttribute(name, lastName, sex, type, street, city, number, age, breed, weight);
     }

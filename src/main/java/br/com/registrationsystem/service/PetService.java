@@ -5,14 +5,15 @@ import br.com.registrationsystem.entity.SexPet;
 import br.com.registrationsystem.exception.BadRequestException;
 import br.com.registrationsystem.mapper.PetMapper;
 import br.com.registrationsystem.repository.PetRepository;
+import br.com.registrationsystem.repository.specifications.PetSpecifications;
 import br.com.registrationsystem.requests.PetPostRequestBody;
 import br.com.registrationsystem.requests.PetPutRequestBody;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -36,7 +37,7 @@ public class PetService {
     }
 
     public List<Pet> findAPetsByNameOrLastName(String name, String lastName) {
-        return petRepository.findByNameOrLastName(name, lastName);
+        return petRepository.findAll(Specification.allOf(PetSpecifications.nomeContem(name)).and(PetSpecifications.sobrenomeContem(lastName)));
     }
 
     public List<Pet> findPetBySex(SexPet sexPet) {
@@ -56,16 +57,29 @@ public class PetService {
     }
 
     public List<Pet> findPetByAddress(String street, String city, String number) {
-        return petRepository.findPetByAddressFields(street, city, number);
+        return petRepository.findAll(Specification.allOf(PetSpecifications.ruaContem(street))
+                .and(PetSpecifications.cidadeIgual(city)
+                .and(PetSpecifications.numeroIgual(number))));
+
     }
 
     public List<Pet> findByAnyAttribute
             (String name, String lastName, String sex, String type, String street, String city, String number,
              BigDecimal age, String breed, BigDecimal weight) {
 
-
-        return petRepository.findByAnyAttribute(name, lastName, sex, type, street, city, number, age, breed, weight);
+        return petRepository.findAll(Specification.allOf(PetSpecifications.nomeContem(name))
+                .and(PetSpecifications.sobrenomeContem(lastName))
+                .and(PetSpecifications.sexoIgual(sex))
+                .and(PetSpecifications.tipoIgual(type))
+                .and(PetSpecifications.ruaContem(street))
+                .and(PetSpecifications.cidadeIgual(city))
+                .and(PetSpecifications.numeroIgual(number))
+                .and(PetSpecifications.idadeIgual(age))
+                .and(PetSpecifications.racaContem(breed))
+                .and(PetSpecifications.pesoIgual(weight)));
     }
+
+
 
 
     public void replacePet(PetPutRequestBody petPutRequestBody) {

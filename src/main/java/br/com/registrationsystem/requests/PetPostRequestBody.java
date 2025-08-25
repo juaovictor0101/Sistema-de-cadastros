@@ -1,8 +1,6 @@
 package br.com.registrationsystem.requests;
 
-import br.com.registrationsystem.entity.TypePet;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Embedded;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
@@ -12,7 +10,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import br.com.registrationsystem.entity.Address;
 
 import java.math.BigDecimal;
 

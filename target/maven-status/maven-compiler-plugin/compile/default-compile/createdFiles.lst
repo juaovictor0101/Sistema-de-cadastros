@@ -7,10 +7,12 @@ br/com/registrationsystem/requests/AddressRequestBody$AddressRequestBodyBuilder.
 br/com/registrationsystem/requests/PetPostRequestBody.class
 br/com/registrationsystem/requests/PetPostRequestBody$PetPostRequestBodyBuilder.class
 br/com/registrationsystem/mapper/PetMapperImpl.class
+br/com/registrationsystem/requests/PetSearchRequestBody.class
 br/com/registrationsystem/exception/BadRequestException.class
 br/com/registrationsystem/service/PetService.class
 br/com/registrationsystem/repository/PetRepository.class
 br/com/registrationsystem/requests/AddressRequestBody.class
+br/com/registrationsystem/repository/specifications/PetSpecifications.class
 br/com/registrationsystem/entity/SexPet.class
 br/com/registrationsystem/entity/Pet.class
 br/com/registrationsystem/entity/TypePet.class

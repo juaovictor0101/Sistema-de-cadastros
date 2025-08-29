@@ -33,29 +33,35 @@ public class PetService {
 //        if(petPostRequestBody.getName().trim().isEmpty()){
 //            throw new BadRequestException("Pet name cannot be empty");
 //        }
-        if(!petPostRequestBody.getName().matches(NAME_REGEX)){
-            throw new BadRequestException("Pet name must be alphabetic");
+        if (petPostRequestBody.getName() != null) {
+            if (!petPostRequestBody.getName().matches(NAME_REGEX)) {
+                throw new BadRequestException("Pet name must be alphabetic");
+            }
         }
 //        if(petPostRequestBody.getLastName() == null ||petPostRequestBody.getLastName().trim().isEmpty()){
 //            throw new BadRequestException("Pet name cannot be empty");
 //        }
-        if(petPostRequestBody.getLastName()!=null) {
+        if (petPostRequestBody.getLastName() != null) {
             if (!petPostRequestBody.getLastName().matches(NAME_REGEX)) {
                 throw new BadRequestException("Pet last name must be alphabetic");
             }
         }
-        if(petPostRequestBody.getWeight().compareTo(maxWeight)>0){
+        if (petPostRequestBody.getWeight().compareTo(maxWeight) > 0) {
             throw new BadRequestException("Pet weight must be less than or equal 60");
         }
-        if(petPostRequestBody.getWeight().compareTo(minWeight)<0){
+        if (petPostRequestBody.getWeight().compareTo(minWeight) < 0) {
             throw new BadRequestException("Pet weight must be greater than or equal 0.5");
         }
-        if(petPostRequestBody.getAge().compareTo(maxAge)>0){
-            throw  new BadRequestException("Pet age must be less than or equal 20.0");
+        if (petPostRequestBody.getAge() != null) {
+            if (petPostRequestBody.getAge().compareTo(maxAge) > 0) {
+                throw new BadRequestException("Pet age must be less than or equal 20.0");
+            }
         }
 
-        if(petPostRequestBody.getBreed().matches(NAME_REGEX) || petPostRequestBody.getBreed().trim().isEmpty()){
-            throw new BadRequestException("Pet breed must be alphabetic");
+        if (petPostRequestBody.getBreed() != null) {
+            if (petPostRequestBody.getBreed().matches(NAME_REGEX) || petPostRequestBody.getBreed().trim().isEmpty()) {
+                throw new BadRequestException("Pet breed must be alphabetic");
+            }
         }
         Pet pet = petMapper.toPet(petPostRequestBody);
         return petRepository.save(pet);
@@ -92,7 +98,7 @@ public class PetService {
     public List<Pet> findPetByAddress(String street, String city, String number) {
         return petRepository.findAll(Specification.allOf(PetSpecifications.ruaContem(street))
                 .and(PetSpecifications.cidadeIgual(city)
-                .and(PetSpecifications.numeroIgual(number))));
+                        .and(PetSpecifications.numeroIgual(number))));
 
     }
 
@@ -111,8 +117,6 @@ public class PetService {
                 .and(PetSpecifications.racaContem(breed))
                 .and(PetSpecifications.pesoIgual(weight)));
     }
-
-
 
 
     public void replacePet(PetPutRequestBody petPutRequestBody) {

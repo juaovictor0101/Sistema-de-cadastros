@@ -6,7 +6,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
@@ -18,11 +17,9 @@ public class PetPutRequestBody {
     @Id
     private Long id;
 
-    @NotEmpty(message = "Pets first name cannot be empty")
     @Schema(description = "This is the anime first name", example = "Zeus")
     private String name;
 
-    @NotEmpty(message = "Pet's last name cannot be empty")
     private String lastName;
 
     private String type;
@@ -33,11 +30,10 @@ public class PetPutRequestBody {
     @Valid
     private AddressRequestBody address;
 
-    @NotNull
     @DecimalMax("20.0")
     private BigDecimal age;
 
-    @NotNull @DecimalMin("0.5") @DecimalMax("60.0")
+    @DecimalMin("0.5") @DecimalMax("60.0")
     private BigDecimal weight;
 
     private String breed;

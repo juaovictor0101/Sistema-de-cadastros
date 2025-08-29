@@ -21,14 +21,13 @@ import java.util.List;
 public class PetService {
     private final PetMapper petMapper;
     private final PetRepository petRepository;
+    private final String NAME_REGEX = "^[a-zA-Z\\s]+$";
+    BigDecimal maxWeight = new BigDecimal("60.0");
+    BigDecimal minWeight = new BigDecimal("0.5");
+    BigDecimal maxAge = new BigDecimal("20.0");
 
     @Transactional
     public Pet savePet(PetPostRequestBody petPostRequestBody) {
-        final String NAME_REGEX = "^[a-zA-Z\\s]+$";
-        BigDecimal maxWeight = new BigDecimal("60.0");
-        BigDecimal minWeight = new BigDecimal("0.5");
-        BigDecimal maxAge = new BigDecimal("20.0");
-
 
         if (petPostRequestBody.getName() != null) {
             if (petPostRequestBody.getName().trim().isEmpty()) {
@@ -123,6 +122,35 @@ public class PetService {
         Pet petSaved = findPetById(petPutRequestBody.getId());
         Pet pet = petMapper.toPet(petPutRequestBody);
         pet.setId(petSaved.getId());
+
+
+        if (petPutRequestBody.getName() != null) {
+            if (petPutRequestBody.getName().trim().isEmpty()) {
+                throw new BadRequestException("Pet name cannot be empty");
+            }
+        }
+        if (petPutRequestBody.getName() != null) {
+            if (!petPutRequestBody.getName().matches(NAME_REGEX)) {
+                throw new BadRequestException("Pet name must be alphabetic");
+            }
+        }
+        if (petPutRequestBody.getLastName() != null) {
+            if (!petPutRequestBody.getLastName().matches(NAME_REGEX)) {
+                throw new BadRequestException("Pet last name must be alphabetic");
+            }
+        }
+        if (petPutRequestBody.getWeight().compareTo(maxWeight) > 0) {
+            throw new BadRequestException("Pet weight must be less than or equal 60");
+        }
+        if (petPutRequestBody.getWeight().compareTo(minWeight) < 0) {
+            throw new BadRequestException("Pet weight must be greater than or equal 0.5");
+        }
+        if (petPutRequestBody.getAge() != null) {
+            if (petPutRequestBody.getAge().compareTo(maxAge) > 0) {
+                throw new BadRequestException("Pet age must be less than or equal 20.0");
+            }
+        }
+
         petRepository.save(pet);
     }
 

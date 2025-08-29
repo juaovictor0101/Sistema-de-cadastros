@@ -1,7 +1,10 @@
 package br.com.registrationsystem.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -49,8 +52,9 @@ public class Pet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @PreUpdate
     @PrePersist
-    public void beforeSave() {
+    public void beforeSaveOrUpdate() {
         if (name == null) {
             this.name = "NÃO INFORMADO";
         }

@@ -12,12 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AddressRequestBody {
 
-    @NotEmpty
     private String street;
 
-    @NotEmpty
     private String city;
 
-    @NotEmpty
     private String number;
 }

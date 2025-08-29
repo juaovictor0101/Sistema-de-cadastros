@@ -39,7 +39,7 @@ public class Pet {
     @Max(value = 20L, message = "Pet's age cannot be bigger than 20 years")
     private BigDecimal age;
 
-    @DecimalMin(value="0.5", message = "Pet's weight cannot be less than 0,5 Kg")
+    @DecimalMin(value = "0.5", message = "Pet's weight cannot be less than 0,5 Kg")
     @DecimalMax(value = "60.0", message = "Pet's weight cannot be bigger than 60 Kg")
     private BigDecimal weight;
 
@@ -48,5 +48,25 @@ public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @PrePersist
+    public void beforeSave() {
+        if (name == null) {
+            this.name = "NÃO INFORMADO";
+        }
+
+        if (lastName == null) {
+            this.lastName = "NÃO INFORMADO";
+        }
+        if (breed == null) {
+            this.breed = "NÃO INFORMADO";
+        }
+        if (age == null || age.intValue() <= 0) {
+            this.age = BigDecimal.ZERO;
+        }
+        if (this.address != null && this.address.getNumber() == null) {
+            this.address.setNumber("NÃO INFORMADO");
+        }
+    }
 
 }

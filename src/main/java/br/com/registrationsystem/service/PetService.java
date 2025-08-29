@@ -30,17 +30,19 @@ public class PetService {
         BigDecimal maxAge = new BigDecimal("20.0");
 
 
-        if(petPostRequestBody.getName() == null || petPostRequestBody.getName().trim().isEmpty()){
-            throw new BadRequestException("Pet name cannot be empty");
-        }
+//        if(petPostRequestBody.getName().trim().isEmpty()){
+//            throw new BadRequestException("Pet name cannot be empty");
+//        }
         if(!petPostRequestBody.getName().matches(NAME_REGEX)){
             throw new BadRequestException("Pet name must be alphabetic");
         }
-        if(petPostRequestBody.getLastName() == null || petPostRequestBody.getLastName().trim().isEmpty()){
-            throw new BadRequestException("Pet name cannot be empty");
-        }
-        if(!petPostRequestBody.getLastName().matches(NAME_REGEX)){
-            throw new BadRequestException("Pet last name must be alphabetic");
+//        if(petPostRequestBody.getLastName() == null ||petPostRequestBody.getLastName().trim().isEmpty()){
+//            throw new BadRequestException("Pet name cannot be empty");
+//        }
+        if(petPostRequestBody.getLastName()!=null) {
+            if (!petPostRequestBody.getLastName().matches(NAME_REGEX)) {
+                throw new BadRequestException("Pet last name must be alphabetic");
+            }
         }
         if(petPostRequestBody.getWeight().compareTo(maxWeight)>0){
             throw new BadRequestException("Pet weight must be less than or equal 60");
@@ -51,7 +53,8 @@ public class PetService {
         if(petPostRequestBody.getAge().compareTo(maxAge)>0){
             throw  new BadRequestException("Pet age must be less than or equal 20.0");
         }
-        if(petPostRequestBody.getBreed().matches(NAME_REGEX)){
+
+        if(petPostRequestBody.getBreed().matches(NAME_REGEX) || petPostRequestBody.getBreed().trim().isEmpty()){
             throw new BadRequestException("Pet breed must be alphabetic");
         }
         Pet pet = petMapper.toPet(petPostRequestBody);

@@ -30,17 +30,17 @@ public class PetService {
         BigDecimal maxAge = new BigDecimal("20.0");
 
 
-//        if(petPostRequestBody.getName().trim().isEmpty()){
-//            throw new BadRequestException("Pet name cannot be empty");
-//        }
+        if (petPostRequestBody.getName() != null) {
+            if (petPostRequestBody.getName().trim().isEmpty()) {
+                throw new BadRequestException("Pet name cannot be empty");
+            }
+        }
+
         if (petPostRequestBody.getName() != null) {
             if (!petPostRequestBody.getName().matches(NAME_REGEX)) {
                 throw new BadRequestException("Pet name must be alphabetic");
             }
         }
-//        if(petPostRequestBody.getLastName() == null ||petPostRequestBody.getLastName().trim().isEmpty()){
-//            throw new BadRequestException("Pet name cannot be empty");
-//        }
         if (petPostRequestBody.getLastName() != null) {
             if (!petPostRequestBody.getLastName().matches(NAME_REGEX)) {
                 throw new BadRequestException("Pet last name must be alphabetic");

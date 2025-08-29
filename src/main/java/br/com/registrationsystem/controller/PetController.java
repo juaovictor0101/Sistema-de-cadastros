@@ -99,7 +99,7 @@ public class PetController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping
+    @PutMapping(path ="/replace")
     public ResponseEntity<Pet> update(@RequestBody @Valid PetPutRequestBody petPutRequestBody) {
         petService.replacePet(petPutRequestBody);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

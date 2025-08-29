@@ -34,10 +34,10 @@ public class PetPostRequestBody {
     @Valid
     private AddressRequestBody address;
 
-    @NotNull @DecimalMax("20.0")
+//    @NotNull @DecimalMax("20.0")
     private BigDecimal age;
 
-    @NotNull @DecimalMin("0.5") @DecimalMax("60.0")
+//    @NotNull @DecimalMin("0.5") @DecimalMax("60.0")
     private BigDecimal weight;
 
     private String breed;

@@ -12,12 +12,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,8 +30,8 @@ public class PetController {
 
     @GetMapping(path = "/users/")
     @Operation(summary = "List all animes paginated", description = "The default size is 5, use the parameter size to change th default value")
-    public ResponseEntity<List<Pet>> listAll() {
-        return new ResponseEntity<>(petService.listAllPets(), HttpStatus.OK);
+    public ResponseEntity<Page<Pet>> listAll(Pageable pageable) {
+        return new ResponseEntity<>(petService.listAllPets(pageable), HttpStatus.OK);
     }
 
     @GetMapping(path = "/findUsersByID/{id}")
@@ -41,60 +42,60 @@ public class PetController {
 
     @GetMapping(path = "/findUsersByFirstName/")
     @Operation(summary = "Returns a pet based on a given first name")
-    public ResponseEntity<List<Pet>> findByFirstName(@RequestParam String name) {
-        return new ResponseEntity<>(petService.findPetByName(name), HttpStatus.OK);
+    public ResponseEntity<Page<Pet>> findByFirstName(@RequestParam String name, Pageable pageable) {
+        return new ResponseEntity<>(petService.findPetByName(name, pageable), HttpStatus.OK);
     }
 
     @GetMapping(path = "/findByFirstNameORLastName/")
     @Operation(summary = "Returns a pet based on a first or second name provided",
             description = "If no search parameters are provided, the method will return all users.")
-    public ResponseEntity<List<Pet>> findByNameOrLastName(
+    public ResponseEntity<Page<Pet>> findByNameOrLastName(
             @RequestParam(required = false) String name,
-            @RequestParam(required = false) String lastName) {
-        return new ResponseEntity<>(petService.findAPetsByNameOrLastName(name, lastName), HttpStatus.OK);
+            @RequestParam(required = false) String lastName, Pageable pageable) {
+        return new ResponseEntity<>(petService.findAPetsByNameOrLastName(name, lastName, pageable), HttpStatus.OK);
     }
 
     @GetMapping(path = "/findUsersBySex/{sex}")
     @Operation(summary = "Returns a list of all pets based on gender.", description = "Gender can only be male or female")
-    public ResponseEntity<List<Pet>> findPetBySex(@PathVariable("sex") SexPet sexPet) {
-        return new ResponseEntity<>(petService.findPetBySex(sexPet), HttpStatus.OK);
+    public ResponseEntity<Page<Pet>> findPetBySex(@PathVariable("sex") SexPet sexPet, Pageable pageable) {
+        return new ResponseEntity<>(petService.findPetBySex(sexPet, pageable), HttpStatus.OK);
     }
 
     @GetMapping(path = "/findUsersByAge/{age}")
     @Operation(summary = "Returns a list of all pets based on age")
-    public ResponseEntity<List<Pet>> findPetByAge(@PathVariable("age") BigDecimal age) {
-        return new ResponseEntity<>(petService.findPetByAge(age), HttpStatus.OK);
+    public ResponseEntity<Page<Pet>> findPetByAge(@PathVariable("age") BigDecimal age, Pageable pageable) {
+        return new ResponseEntity<>(petService.findPetByAge(age, pageable), HttpStatus.OK);
     }
 
     @GetMapping(path = "/findUsersByWeight/{weight}")
     @Operation(summary = "Returns a list of all pets based on weight")
-    public ResponseEntity<List<Pet>> findPetByWeight(@PathVariable("weight") BigDecimal weight) {
-        return new ResponseEntity<>(petService.findPetByWeight(weight), HttpStatus.OK);
+    public ResponseEntity<Page<Pet>> findPetByWeight(@PathVariable("weight") BigDecimal weight, Pageable pageable) {
+        return new ResponseEntity<>(petService.findPetByWeight(weight, pageable), HttpStatus.OK);
     }
 
     @GetMapping(path = "/findUsersByBreed/{breed}")
     @Operation(summary = "Returns a list of all pets based on breed")
-    public ResponseEntity<List<Pet>> findPetByBreed(@PathVariable("breed") String breed) {
-        return new ResponseEntity<>(petService.findPetByBreed(breed), HttpStatus.OK);
+    public ResponseEntity<Page<Pet>> findPetByBreed(@PathVariable("breed") String breed, Pageable pageable) {
+        return new ResponseEntity<>(petService.findPetByBreed(breed,pageable), HttpStatus.OK);
     }
 
     @GetMapping(path = "/findUsersByAddress/")
     @Operation(summary = "Returns a list of pets based on the address.",
             description = "The search can be for a complete address (NUMBER, STREET AND CITY) or just one or the other, e.g. NUMBER AND STREET, STREET AND CITY.")
-    public ResponseEntity<List<Pet>> findPetByAddress(
+    public ResponseEntity<Page<Pet>> findPetByAddress(
             @RequestParam(required = false) String street,
             @RequestParam(required = false) String city,
-            @RequestParam(required = false) String number) {
-        return new ResponseEntity<>(petService.findPetByAddress(street, city, number), HttpStatus.OK);
+            @RequestParam(required = false) String number, Pageable pageable) {
+        return new ResponseEntity<>(petService.findPetByAddress(street, city, number, pageable), HttpStatus.OK);
     }
 
     @GetMapping(path = "/findUsersByAnyAttributes/")
     @Operation(summary = "Search pets based on any attribute",
             description = "You can search by any one or more of these parameters: first name, last name, gender, type, street, city, house number, age, race, and weight.")
-    public ResponseEntity<List<Pet>> searchPets(PetSearchRequestBody petSearch) {
-        List<Pet> pets = petService.findByAnyAttribute(petSearch.getName(), petSearch.getLastName(), petSearch.getSex(),
+    public ResponseEntity<Page<Pet>> searchPets(PetSearchRequestBody petSearch, Pageable pageable) {
+        Page<Pet> pets = petService.findByAnyAttribute(petSearch.getName(), petSearch.getLastName(), petSearch.getSex(),
                 petSearch.getType(), petSearch.getStreet(), petSearch.getCity(), petSearch.getNumber(), petSearch.getAge(),
-                petSearch.getBreed(), petSearch.getWeight());
+                petSearch.getBreed(), petSearch.getWeight(), pageable);
         return ResponseEntity.ok(pets);
     }
 

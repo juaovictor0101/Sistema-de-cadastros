@@ -2,20 +2,22 @@ package br.com.registrationsystem.repository;
 
 import br.com.registrationsystem.entity.Pet;
 import br.com.registrationsystem.entity.SexPet;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
 import java.math.BigDecimal;
-import java.util.List;
 
 public interface PetRepository extends JpaRepository<Pet, Long>, JpaSpecificationExecutor<Pet> {
-    List<Pet> findPetByName(String name);
+    Page<Pet> findPetByName(String name, Pageable pageable);
 
-    List<Pet> findPetBySex(SexPet sex);
+    Page<Pet> findPetBySex(SexPet sex, Pageable pageable);
 
-    List<Pet> findPetByAge(BigDecimal age);
+    Page<Pet> findPetByAge(BigDecimal age, Pageable pageable);
 
-    List<Pet> findPetByWeight(BigDecimal weight);
+    Page<Pet> findPetByWeight(BigDecimal weight, Pageable pageable);
 
-    List<Pet> findPetByBreed(String breed);
+    Page<Pet> findPetByBreed(String breed, Pageable pageable);
 
 }

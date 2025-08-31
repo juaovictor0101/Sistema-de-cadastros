@@ -10,11 +10,12 @@ import br.com.registrationsystem.requests.PetPostRequestBody;
 import br.com.registrationsystem.requests.PetPutRequestBody;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -70,40 +71,40 @@ public class PetService {
         return petRepository.findById(id).orElseThrow(() -> new BadRequestException("Pet not found based on ID"));
     }
 
-    public List<Pet> findPetByName(String name) {
-        return petRepository.findPetByName(name);
+    public Page<Pet> findPetByName(String name, Pageable pageable) {
+        return petRepository.findPetByName(name, pageable);
     }
 
-    public List<Pet> findAPetsByNameOrLastName(String name, String lastName) {
-        return petRepository.findAll(Specification.allOf(PetSpecifications.nomeContem(name)).and(PetSpecifications.sobrenomeContem(lastName)));
+    public Page<Pet> findAPetsByNameOrLastName(String name, String lastName, Pageable pageable) {
+        return petRepository.findAll(Specification.allOf(PetSpecifications.nomeContem(name)).and(PetSpecifications.sobrenomeContem(lastName)), pageable);
     }
 
-    public List<Pet> findPetBySex(SexPet sexPet) {
-        return petRepository.findPetBySex(sexPet);
+    public Page<Pet> findPetBySex(SexPet sexPet, Pageable pageable) {
+        return petRepository.findPetBySex(sexPet, pageable);
     }
 
-    public List<Pet> findPetByAge(BigDecimal age) {
-        return petRepository.findPetByAge(age);
+    public Page<Pet> findPetByAge(BigDecimal age, Pageable pageable) {
+        return petRepository.findPetByAge(age, pageable);
     }
 
-    public List<Pet> findPetByWeight(BigDecimal weight) {
-        return petRepository.findPetByWeight(weight);
+    public Page<Pet> findPetByWeight(BigDecimal weight, Pageable pageable) {
+        return petRepository.findPetByWeight(weight, pageable);
     }
 
-    public List<Pet> findPetByBreed(String breed) {
-        return petRepository.findPetByBreed(breed);
+    public Page<Pet> findPetByBreed(String breed, Pageable pageable) {
+        return petRepository.findPetByBreed(breed, pageable);
     }
 
-    public List<Pet> findPetByAddress(String street, String city, String number) {
+    public Page<Pet> findPetByAddress(String street, String city, String number, Pageable pageable) {
         return petRepository.findAll(Specification.allOf(PetSpecifications.ruaContem(street))
                 .and(PetSpecifications.cidadeIgual(city)
-                        .and(PetSpecifications.numeroIgual(number))));
+                        .and(PetSpecifications.numeroIgual(number))), pageable);
 
     }
 
-    public List<Pet> findByAnyAttribute
+    public Page<Pet> findByAnyAttribute
             (String name, String lastName, String sex, String type, String street, String city, String number,
-             BigDecimal age, String breed, BigDecimal weight) {
+             BigDecimal age, String breed, BigDecimal weight, Pageable pageable) {
 
         return petRepository.findAll(Specification.allOf(PetSpecifications.nomeContem(name))
                 .and(PetSpecifications.sobrenomeContem(lastName))
@@ -114,7 +115,7 @@ public class PetService {
                 .and(PetSpecifications.numeroIgual(number))
                 .and(PetSpecifications.idadeIgual(age))
                 .and(PetSpecifications.racaContem(breed))
-                .and(PetSpecifications.pesoIgual(weight)));
+                .and(PetSpecifications.pesoIgual(weight)),pageable);
     }
 
 
@@ -158,7 +159,7 @@ public class PetService {
         petRepository.delete(findPetById(id));
     }
 
-    public List<Pet> listAllPets() {
-        return petRepository.findAll();
+    public Page<Pet> listAllPets(Pageable pageable) {
+        return petRepository.findAll(pageable);
     }
 }

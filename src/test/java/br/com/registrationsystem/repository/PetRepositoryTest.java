@@ -4,23 +4,28 @@ import br.com.registrationsystem.entity.Address;
 import br.com.registrationsystem.entity.Pet;
 import br.com.registrationsystem.entity.SexPet;
 import br.com.registrationsystem.entity.TypePet;
+import lombok.extern.log4j.Log4j2;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @DataJpaTest
 @DisplayName("Tests for Pet repository")
+@Log4j2
 class PetRepositoryTest {
 
     @Autowired
     private PetRepository petRepository;
 
     @Test
-    @DisplayName("Save creates pet whe successful")
+    @DisplayName("Save persists pet when successful")
     void save_PersistPet_WhenSuccessful() {
 
         Pet petToBeSaved = createPet();
@@ -62,6 +67,63 @@ class PetRepositoryTest {
         Assertions.assertThat(savedPet.getWeight()).isEqualTo(petToBeSaved.getWeight());
 
     }
+
+    @Test
+    @DisplayName("Updates pet when successful")
+    void save_UpdatePet_WhenSuccessful() {
+
+        Pet petToBeSaved = createPet();
+        Pet savedPet = this.petRepository.save(petToBeSaved);
+        savedPet.setName("Bolinha");
+        Pet updatedPet = this.petRepository.save(savedPet);
+        log.info(updatedPet.getName());
+
+        Assertions.assertThat(updatedPet).isNotNull();
+        Assertions.assertThat(updatedPet.getId()).isNotNull();
+        Assertions.assertThat(updatedPet.getName()).isEqualTo(savedPet.getName());
+
+
+    }
+
+    @Test
+    @DisplayName("Delete removes pet when successful")
+    void delete_RemovesPet_WhenSuccessful() {
+
+        Pet petToBeSaved = createPet();
+        Pet savedPet = this.petRepository.save(petToBeSaved);
+
+        this.petRepository.delete(savedPet);
+
+        Optional<Pet> petOptional = this.petRepository.findById(savedPet.getId());
+
+        Assertions.assertThat(petOptional).isEmpty();
+
+
+    }
+
+    @Test
+    @DisplayName("Find By Name return list of pet when successful")
+    void findByName_ReturnListOfPet_WhenSuccessful() {
+
+        Pet petToBeSaved = createPet();
+        Pet savedPet = this.petRepository.save(petToBeSaved);
+
+        String name = savedPet.getName();
+
+        Page<Pet> pets = this.petRepository.findPetByName(name, Pageable.ofSize(5));
+
+        Assertions.assertThat(pets)
+                .isNotEmpty()
+                .contains(savedPet);
+    }
+
+    @Test
+    @DisplayName("Find By Name return empty list of pet when no pets is found")
+    void findByName_ReturnEmptyListOfPet_WhenNoPetIsNotFound() {
+        Page<Pet> pets = this.petRepository.findPetByName("teste", Pageable.ofSize(5));
+        Assertions.assertThat(pets).isEmpty();
+    }
+
 
     private Pet createPet() {
         Address address = Address.builder()
